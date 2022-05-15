@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<h3>Введите логин</h3>
+<form name="login" method="post" th:object="${userLogin}">
+<input name="userLogin" type="text">
+</form>
+<br>
+<h3>Введите пароль</h3>
+<form name="password" method="post" th:object="${userPassword}">
+    <input name="userPassword" type="text">
+</form>
+<a href="/login"><h2>Войти</h2></a>
+<br>
+<a href="/registration"><h2>Регистрация</h2></a>
+</body>
+</html>

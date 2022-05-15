@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>AllProducts</title>
+</head>
+<body>
+<h1>All Products</h1>
+<table>
+    <!--/*@thymesVar id="productList" type="templates"*/-->
+    <th:block th:each="productsDTO : ${productList}">
+        <tr>
+                <td3><td th:text="${productsDTO.getTitle}"></td></td3>
+            <td3><td th:text="${productsDTO.getPrice}"></td></td3>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

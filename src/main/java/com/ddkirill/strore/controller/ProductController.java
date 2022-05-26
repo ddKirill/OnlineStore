@@ -28,7 +28,6 @@ public class ProductController {
     @GetMapping("/allProducts")
     public String allProducts(Model model) {
 
-
         List<AllProducts> allProducts = getAllProducts.getAllProducts();
         List<ProductsDTO> productsDTOS = new ArrayList<>();
 
@@ -42,10 +41,7 @@ public class ProductController {
 
     }
 
-    @GetMapping("/allProduct/")
-    public String selectedProduct() {
-        return "selectedProduct";
-    }
+
 
     @GetMapping("/index")
     public String indexPage() {

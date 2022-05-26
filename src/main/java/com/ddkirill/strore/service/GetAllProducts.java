@@ -18,6 +18,8 @@ public class GetAllProducts {
     }
 
     public List<AllProducts> getAllProducts(){
+
+
         Iterable<ProductEntity> productEntity = productRepository.findAll();
         List<AllProducts>  allProductsList = new ArrayList<>();
 

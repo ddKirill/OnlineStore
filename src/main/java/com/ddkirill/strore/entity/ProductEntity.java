@@ -15,13 +15,15 @@ public class ProductEntity {
     private int price;
     private String description;
     private String category;
+    private String image;
 
-    public ProductEntity(UUID id, String title, int price, String description, String category) {
+    public ProductEntity(UUID id, String title, int price, String description, String category, String image) {
         this.id = id;
         this.title = title;
         this.price = price;
         this.description = description;
         this.category = category;
+        this.image = image;
     }
 
     public String getTitle() {
@@ -31,6 +33,11 @@ public class ProductEntity {
     public int getPrice() {
         return price;
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
 
     public void setPrice(int price) {
         this.price = price;
@@ -50,5 +57,13 @@ public class ProductEntity {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

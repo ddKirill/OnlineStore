@@ -11,3 +11,4 @@ public class InformationController {
         return "information";
     }
 }
+

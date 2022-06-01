@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Products</title>
+</head>
+<body>
+<th><h2>Add new product</h2></th>
+<form action="/allProducts/manageProducts" method="post" th:object="${addProduct}">
+    <th><h3>Title</h3></th>
+    <input name="title" type="text">
+    <br>
+    <th><h3>Price</h3></th>
+    <input name="price" type="text">
+    <br>
+    <th><h3>Description</h3></th>
+    <input name="description" type="text">
+    <br>
+    <th><h3>LocationImage</h3></th>
+    <input name="locationImage" type="text">
+    <br>
+    <button type="submit" formaction="/allProducts/manageProducts">Enter</button>
+</form>
+<table>
+    <br>
+    <h2>All Products</h2>
+    <!--/*@thymesVar id="productList" type="templates"*/-->
+    <th:block th:each="allProductsWithFullInformation : ${allProductsWithFullInformationList}">
+        <tr>
+            <td3><td th:text="${allProductsWithFullInformation.getTitle}"></td></td3>
+            <td3><td th:text="${allProductsWithFullInformation.getPrice}"></td></td3>
+            <td3><td th:text="${allProductsWithFullInformation.getDescription}"></td></td3>
+            <td3><td th:text="${allProductsWithFullInformation.getLocationImage}"></td></td3>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

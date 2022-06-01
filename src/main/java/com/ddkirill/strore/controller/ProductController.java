@@ -1,6 +1,8 @@
 package com.ddkirill.strore.controller;
 
 import com.ddkirill.strore.controller.dto.ProductsDTO;
+import com.ddkirill.strore.entity.AddProduct;
+import com.ddkirill.strore.entity.ProductEntity;
 import com.ddkirill.strore.repository.ProductRepository;
 import com.ddkirill.strore.service.AllProducts;
 import com.ddkirill.strore.service.GetAllProducts;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +45,4 @@ public class ProductController {
 
     }
 
-
-
-    @GetMapping("/index")
-    public String indexPage() {
-        return "index";
-    }
 }

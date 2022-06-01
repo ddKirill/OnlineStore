@@ -26,6 +26,7 @@ public class GetAllProducts {
         for (ProductEntity product : productEntity) {
             AllProducts allProducts = new AllProducts(product.getTitle(),
                     product.getPrice());
+
             allProductsList.add(allProducts);
         }
         return allProductsList;

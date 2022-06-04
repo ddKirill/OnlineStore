@@ -16,7 +16,7 @@ public class GetAllProductsWithFullInformation {
         this.productRepository = productRepository;
     }
 
-    public List<AllProductsWithFullInformation> getAllProducts(ProductRepository productRepository) {
+    public List<AllProductsWithFullInformation> getAllProducts() {
 
         Iterable<ProductEntity> productEntity = productRepository.findAll();
         ArrayList<AllProductsWithFullInformation> allProductsWithFullInformationList = new ArrayList<>();
@@ -24,7 +24,7 @@ public class GetAllProductsWithFullInformation {
         for (ProductEntity product : productEntity) {
 
             AllProductsWithFullInformation allProductsWithFullInformation = new AllProductsWithFullInformation(
-                    product.getTitle(), product.getPrice(), product.getDescription(), product.getLocationImage());
+                    product.getId(), product.getTitle(), product.getPrice(), product.getDescription(), product.getLocationImage());
 
             allProductsWithFullInformationList.add(allProductsWithFullInformation);
         }

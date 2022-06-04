@@ -25,13 +25,18 @@
     <br>
     <h2>All Products</h2>
     <!--/*@thymesVar id="productList" type="templates"*/-->
-    <th:block th:each="allProductsWithFullInformation : ${allProductsWithFullInformationList}">
+    <th:block th:each="allProductsWithFullInformationDTOS : ${allProducts}">
         <tr>
-            <td3><td th:text="${allProductsWithFullInformation.getTitle}"></td></td3>
-            <td3><td th:text="${allProductsWithFullInformation.getPrice}"></td></td3>
-            <td3><td th:text="${allProductsWithFullInformation.getDescription}"></td></td3>
-            <td3><td th:text="${allProductsWithFullInformation.getLocationImage}"></td></td3>
+            <td3><td th:text="${allProductsWithFullInformationDTOS.getTitle}"></td></td3>
+            <td3><td th:text="${allProductsWithFullInformationDTOS.getPrice}"></td></td3>
+            <td3><td th:text="${allProductsWithFullInformationDTOS.getDescription}"></td></td3>
+            <td3><td th:text="${allProductsWithFullInformationDTOS.getLocationImage}"></td></td3>
         </tr>
+        <br>
+        <form th:action="@{/deleteProduct/{id}}" method="post">
+            <input type="hidden" name="id" th:value="${allProductsWithFullInformationDTOS.getId}" />
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        </form>
     </th:block>
 </table>
 </body>

@@ -24,6 +24,10 @@ public class ProductEntity {
         this.locationImage = locationImage;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }

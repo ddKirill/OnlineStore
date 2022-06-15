@@ -1,14 +1,22 @@
 package com.ddkirill.strore.telegrambot;
 
 import com.ddkirill.strore.config.BotProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ddkirill.strore.domain.AllProducts;
+import com.ddkirill.strore.domain.AllProductsWithFullInformation;
+import com.ddkirill.strore.service.products.GetAllProducts;
+import com.ddkirill.strore.service.products.GetAllProductsWithFullInformation;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Chat;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+
+import java.util.List;
 
 
 @Component
@@ -17,9 +25,13 @@ public class StoreBot {
     private final BotProperties botProperties;
     private final TelegramLongPollingBot bot;
     private final TelegramBotsApi botsApi;
+    private GetAllProducts getAllProducts;
+    private GetAllProductsWithFullInformation getAllProductsWithFullInformation;
 
-    public StoreBot(BotProperties botProperties) throws TelegramApiException {
+    public StoreBot(BotProperties botProperties, GetAllProducts getAllProducts, GetAllProductsWithFullInformation getAllProductsWithFullInformation) throws TelegramApiException {
         this.botProperties = botProperties;
+        this.getAllProducts = getAllProducts;
+        this.getAllProductsWithFullInformation = getAllProductsWithFullInformation;
         this.botsApi = new TelegramBotsApi(DefaultBotSession.class);
         this.bot = new MyBot();
         this.botsApi.registerBot(bot);
@@ -40,19 +52,63 @@ public class StoreBot {
 
         @Override
         public void onUpdateReceived(Update update) {
-            // We check if the update has a message and the message has text
-            if (update.hasMessage() && update.getMessage().hasText()) {
-                SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
-                message.setChatId(update.getMessage().getChatId().toString());
-                message.setText(update.getMessage().getText());
 
-                try {
-                    execute(message); // Call method to send the message
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
+            if (update.hasMessage()) {
+                Message message = update.getMessage();
+                Chat chat = message.getChat();
+                User user = message.getFrom();
+
+                if (message.isCommand()) {
+                    if ("/allProducts".equals(message.getText())) {
+                        List<AllProducts> allProducts = getAllProducts.getAllProducts();
+                        StringBuilder stringBuilder = new StringBuilder();
+
+                        for (AllProducts allProduct : allProducts) {
+                            stringBuilder.append(allProduct.getTitle())
+                                    .append(" ")
+                                    .append(allProduct.getPrice())
+                                    .append("\n");
+                        }
+                        sendTextMessage(chat.getId(), stringBuilder.toString());
+                    }
+
+                    if ("/manageProducts".equals(message.getText())) {
+                        List<AllProductsWithFullInformation> allProductsList = getAllProductsWithFullInformation.getAllProducts();
+                        StringBuilder stringBuilder = new StringBuilder();
+
+                        for (AllProductsWithFullInformation products : allProductsList) {
+                            stringBuilder.append(products.getTitle())
+                                    .append(" ")
+                                    .append(products.getPrice())
+                                    .append(" ")
+                                    .append(products.getDescription())
+                                    .append(" ")
+                                    .append(products.getLocationImage())
+                                    .append("\n");
+                        }
+                        sendTextMessage(chat.getId(), stringBuilder.toString());
+                    }
                 }
             }
+
+
         }
+
+        private void sendTextMessage(Long chatId, String text) {
+            try {
+
+                execute(
+                        SendMessage.builder()
+                                .text(text)
+                                .chatId(chatId.toString())
+                                .build()
+
+                );
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }

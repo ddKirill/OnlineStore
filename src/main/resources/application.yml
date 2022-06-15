@@ -12,5 +12,3 @@ telegram:
   bot:
     username: ${BOT_USERNAME}
     token: ${TOKEN}
-
-

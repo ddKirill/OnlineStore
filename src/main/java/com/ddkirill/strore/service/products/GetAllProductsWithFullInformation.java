@@ -1,5 +1,6 @@
-package com.ddkirill.strore.service;
+package com.ddkirill.strore.service.products;
 
+import com.ddkirill.strore.domain.AllProductsWithFullInformation;
 import com.ddkirill.strore.entity.ProductEntity;
 import com.ddkirill.strore.repository.ProductRepository;
 import org.springframework.stereotype.Service;

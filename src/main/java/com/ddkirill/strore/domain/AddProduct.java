@@ -1,17 +1,13 @@
-package com.ddkirill.strore.service;
+package com.ddkirill.strore.domain;
 
-import java.util.UUID;
+public class AddProduct {
 
-public class AllProductsWithFullInformation {
-
-    private UUID id;
     private String title;
     private int price;
     private String description;
     private String locationImage;
 
-    public AllProductsWithFullInformation(UUID id, String title, int price, String description, String locationImage) {
-        this.id = id;
+    public AddProduct(String title, int price, String description, String locationImage) {
         this.title = title;
         this.price = price;
         this.description = description;
@@ -32,9 +28,5 @@ public class AllProductsWithFullInformation {
 
     public String getLocationImage() {
         return locationImage;
-    }
-
-    public UUID getId() {
-        return id;
     }
 }

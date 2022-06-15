@@ -1,4 +1,4 @@
-package com.ddkirill.strore.service;
+package com.ddkirill.strore.domain;
 
 public class AllProducts {
 

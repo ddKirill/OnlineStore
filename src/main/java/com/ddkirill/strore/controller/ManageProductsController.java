@@ -2,29 +2,31 @@ package com.ddkirill.strore.controller;
 
 
 import com.ddkirill.strore.controller.dto.AllProductsWithFullInformationDTO;
-import com.ddkirill.strore.entity.AddProduct;
+import com.ddkirill.strore.domain.AddProduct;
 import com.ddkirill.strore.entity.ProductEntity;
 import com.ddkirill.strore.repository.ProductRepository;
-import com.ddkirill.strore.service.AllProductsWithFullInformation;
-import com.ddkirill.strore.service.GetAllProductsWithFullInformation;
+import com.ddkirill.strore.domain.AllProductsWithFullInformation;
+import com.ddkirill.strore.service.products.GetAllProductsWithFullInformation;
+import com.ddkirill.strore.service.products.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 public class ManageProductsController {
 
     private ProductRepository productRepository;
     private GetAllProductsWithFullInformation getAllProductsWithFullInformation;
+    private ProductService productService;
 
     public ManageProductsController(ProductRepository productRepository,
-                                    GetAllProductsWithFullInformation getAllProductsWithFullInformation) {
+                                    GetAllProductsWithFullInformation getAllProductsWithFullInformation, ProductService productService) {
         this.productRepository = productRepository;
         this.getAllProductsWithFullInformation = getAllProductsWithFullInformation;
+        this.productService = productService;
     }
 
     @GetMapping("/allProducts/manageProducts")
@@ -56,10 +58,10 @@ public class ManageProductsController {
 
     }
 
-    @PostMapping(value = "/deleteProduct/{id}")
-    public String deleteProduct(@RequestParam (name = "id") UUID uuid) {
-        productRepository.deleteById(uuid);
-        return "redirect:manageProducts";
+    @GetMapping( "/deleteProduct")
+    public String deleteProduct(@RequestParam String title) {
+        productService.deleteByTitle(title);
+        return "redirect:allProducts/manageProducts";
     }
 
 

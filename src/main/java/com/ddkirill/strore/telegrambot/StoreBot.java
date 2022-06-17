@@ -3,6 +3,7 @@ package com.ddkirill.strore.telegrambot;
 import com.ddkirill.strore.config.BotProperties;
 import com.ddkirill.strore.domain.AllProducts;
 import com.ddkirill.strore.domain.AllProductsWithFullInformation;
+import com.ddkirill.strore.service.ReadTxt;
 import com.ddkirill.strore.service.products.GetAllProducts;
 import com.ddkirill.strore.service.products.GetAllProductsWithFullInformation;
 import org.springframework.stereotype.Component;
@@ -25,13 +26,15 @@ public class StoreBot {
     private final BotProperties botProperties;
     private final TelegramLongPollingBot bot;
     private final TelegramBotsApi botsApi;
-    private GetAllProducts getAllProducts;
-    private GetAllProductsWithFullInformation getAllProductsWithFullInformation;
+    private final GetAllProducts getAllProducts;
+    private final GetAllProductsWithFullInformation getAllProductsWithFullInformation;
+    private ReadTxt readTxt;
 
-    public StoreBot(BotProperties botProperties, GetAllProducts getAllProducts, GetAllProductsWithFullInformation getAllProductsWithFullInformation) throws TelegramApiException {
+    public StoreBot(BotProperties botProperties, GetAllProducts getAllProducts, GetAllProductsWithFullInformation getAllProductsWithFullInformation, ReadTxt readTxt) throws TelegramApiException {
         this.botProperties = botProperties;
         this.getAllProducts = getAllProducts;
         this.getAllProductsWithFullInformation = getAllProductsWithFullInformation;
+        this.readTxt = readTxt;
         this.botsApi = new TelegramBotsApi(DefaultBotSession.class);
         this.bot = new MyBot();
         this.botsApi.registerBot(bot);
@@ -59,6 +62,14 @@ public class StoreBot {
                 User user = message.getFrom();
 
                 if (message.isCommand()) {
+
+                    if ("/start".equals(message.getText())) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        stringBuilder.append(readTxt.readTextFile("text/startText.txt"));
+
+                        sendTextMessage(chat.getId(), stringBuilder.toString());
+                    }
+
                     if ("/allProducts".equals(message.getText())) {
                         List<AllProducts> allProducts = getAllProducts.getAllProducts();
                         StringBuilder stringBuilder = new StringBuilder();
@@ -67,6 +78,7 @@ public class StoreBot {
                             stringBuilder.append(allProduct.getTitle())
                                     .append(" ")
                                     .append(allProduct.getPrice())
+                                    .append("₽")
                                     .append("\n");
                         }
                         sendTextMessage(chat.getId(), stringBuilder.toString());

@@ -23,7 +23,7 @@ public class ReadTxt {
             }
             fileReader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("File not found or not reading");
         }
 
         return readText;

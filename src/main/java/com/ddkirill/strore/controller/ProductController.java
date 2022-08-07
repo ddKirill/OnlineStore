@@ -2,8 +2,8 @@ package com.ddkirill.strore.controller;
 
 import com.ddkirill.strore.controller.dto.ProductsDTO;
 import com.ddkirill.strore.repository.ProductRepository;
-import com.ddkirill.strore.service.AllProducts;
-import com.ddkirill.strore.service.GetAllProducts;
+import com.ddkirill.strore.domain.AllProducts;
+import com.ddkirill.strore.service.products.GetAllProducts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +28,6 @@ public class ProductController {
     @GetMapping("/allProducts")
     public String allProducts(Model model) {
 
-
         List<AllProducts> allProducts = getAllProducts.getAllProducts();
         List<ProductsDTO> productsDTOS = new ArrayList<>();
 
@@ -42,13 +41,4 @@ public class ProductController {
 
     }
 
-    @GetMapping("/allProduct/")
-    public String selectedProduct() {
-        return "selectedProduct";
-    }
-
-    @GetMapping("/index")
-    public String indexPage() {
-        return "index";
-    }
 }

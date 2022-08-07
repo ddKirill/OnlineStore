@@ -1,5 +1,4 @@
 databaseChangeLog:
   - include:
        file: db/changelog/1_db_schema_for_product.sql
-  - include:
-       file: db/changelog/2_add_test_product.sql
+

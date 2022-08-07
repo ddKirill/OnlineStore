@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ManageOrdes</title>
+</head>
+<body>
+<h2>All Orders</h2>
+<table>
+    <tr>
+        <th>Order number</th>
+        <th>Buyer</th>
+        <th>Product title</th>
+        <th>Amount</th>
+        <th>Order times</th>
+        <th>Total cost</th>
+    </tr>
+    <th:block th:each=" orderList: ${allOrdersDTOS}">
+        <tr>
+            <td th:text="${orderEntity.getNumber}"></td>
+            <td th:text="${}"></td>
+            <td th:text="${}"></td>
+            <td th:text="${}"></td>
+            <td th:text="${}"></td>
+            <td>
+                <form th:action="@{/deleteOrder}" method="get">
+                    <input type="hidden" name="" th:value="${}"/>
+                    <input type="submit" value="Delete" class="btn btn-danger"/>
+                </form>
+            </td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

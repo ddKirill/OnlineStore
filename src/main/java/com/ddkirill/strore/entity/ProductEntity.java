@@ -14,14 +14,18 @@ public class ProductEntity {
     private String title;
     private int price;
     private String description;
-    private String category;
+    private String locationImage;
 
-    public ProductEntity(UUID id, String title, int price, String description, String category) {
+    public ProductEntity(UUID id, String title, int price, String description, String locationImage) {
         this.id = id;
         this.title = title;
         this.price = price;
         this.description = description;
-        this.category = category;
+        this.locationImage = locationImage;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -31,6 +35,11 @@ public class ProductEntity {
     public int getPrice() {
         return price;
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
 
     public void setPrice(int price) {
         this.price = price;
@@ -44,11 +53,12 @@ public class ProductEntity {
         this.description = description;
     }
 
-    public String getCategory() {
-        return category;
+
+    public String getLocationImage() {
+        return locationImage;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setLocationImage(String locationImage) {
+        this.locationImage = locationImage;
     }
 }

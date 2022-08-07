@@ -3,30 +3,30 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE product
 (
     id UUID primary key not null default uuid_generate_v4(),
-    title VARCHAR(256) not null,
+    title VARCHAR(256) not null UNIQUE,
     price INTEGER not null,
-    description VARCHAR(256),
-    category VARCHAR(256) not null
+    description VARCHAR,
+    location_image VARCHAR(256)
 );
 
-CREATE TABLE users
+CREATE TABLE buyer
 (
-    id UUID primary key not null,
-    name VARCHAR(256) not null,
-    lastname VARCHAR(256),
-    email VARCHAR(256) not null,
-    login VARCHAR(256) not null,
-    password VARCHAR(256) not null,
-    activity BOOLEAN not null
+    id UUID primary key not null default uuid_generate_v4(),
+    name VARCHAR(256) UNIQUE not null
 );
 
 CREATE TABLE orders
 (
-    id UUID primary key not null,
-    item UUID references product,
+    id UUID primary key not null default uuid_generate_v4(),
+    number INTEGER not null,
+    product_title VARCHAR(255) references product(title) not null,
     amount INTEGER not null,
-    status VARCHAR(125) not null,
-    buyer UUID not null references users
-);
+    buyer VARCHAR(256) not null references buyer(name),
+    order_times TIMESTAMP not null,
+    total_cost Integer not null
+
+)
+
+
 
 

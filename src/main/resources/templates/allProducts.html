@@ -10,7 +10,7 @@
     <!--/*@thymesVar id="productList" type="templates"*/-->
     <th:block th:each="productsDTO : ${productList}">
         <tr>
-                <td3><td th:text="${productsDTO.getTitle}"></td></td3>
+            <td3><td th:text="${productsDTO.getTitle}"></td></td3>
             <td3><td th:text="${productsDTO.getPrice}"></td></td3>
         </tr>
     </th:block>

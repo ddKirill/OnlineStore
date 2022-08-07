@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Products</title>
+</head>
+<body>
+<th><h2>Add new product</h2></th>
+<form action="/allProducts/manageProducts" method="post" th:object="${addProduct}">
+    <th><h3>Title</h3></th>
+    <input name="title" type="text">
+    <br>
+    <th><h3>Price</h3></th>
+    <input name="price" type="text">
+    <br>
+    <th><h3>Description</h3></th>
+    <input name="description" type="text">
+    <br>
+    <th><h3>LocationImage</h3></th>
+    <input name="locationImage" type="text">
+    <br>
+    <button type="submit" formaction="/allProducts/manageProducts">Enter</button>
+</form>
+<table>
+    <br>
+    <h2>All Products</h2>
+    <br>
+    <tr>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Location Image</th>
+    </tr>
+    <!--/*@thymesVar id="productList" type="templates"*/-->
+    <th:block th:each="allProductsWithFullInformationDTOS : ${allProducts}">
+        <tr>
+            <td th:text="${allProductsWithFullInformationDTOS.getTitle}"></td>
+            <td th:text="${allProductsWithFullInformationDTOS.getPrice}"></td>
+            <td th:text="${allProductsWithFullInformationDTOS.getDescription}"></td>
+            <td th:text="${allProductsWithFullInformationDTOS.getLocationImage}"></td>
+        <td>
+        <form th:action="@{/deleteProduct}" method="get">
+            <input type="hidden" name="title" th:value="${allProductsWithFullInformationDTOS.getTitle}"/>
+            <input type="submit" value="Delete" class="btn btn-danger"/>
+        </form>
+        </td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

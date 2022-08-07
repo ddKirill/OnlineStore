@@ -1,20 +1,10 @@
 package com.ddkirill.strore.controller.dto;
 
-public class ProductsDTO {
+import com.ddkirill.strore.domain.Product;
 
-    private final String title;
-    private final Integer price;
+public class ProductsDTO extends Product {
 
-    public ProductsDTO(String title, Integer price) {
-        this.title = title;
-        this.price = price;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Integer getPrice() {
-        return price;
+    public ProductsDTO(String title, Integer price, String description, String locationImage) {
+        super(title, price, description, locationImage);
     }
 }

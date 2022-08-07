@@ -3,9 +3,9 @@ package com.ddkirill.strore.controller;
 
 import com.ddkirill.strore.controller.dto.AllProductsWithFullInformationDTO;
 import com.ddkirill.strore.domain.AddProduct;
+import com.ddkirill.strore.domain.Product;
 import com.ddkirill.strore.entity.ProductEntity;
 import com.ddkirill.strore.repository.ProductRepository;
-import com.ddkirill.strore.domain.AllProductsWithFullInformation;
 import com.ddkirill.strore.service.products.GetAllProductsWithFullInformation;
 import com.ddkirill.strore.service.products.ProductService;
 import org.springframework.stereotype.Controller;
@@ -32,10 +32,10 @@ public class ManageProductsController {
     @GetMapping("/allProducts/manageProducts")
     public String allProducts(Model model){
 
-        List<AllProductsWithFullInformation> allProductsWithFullInformation = getAllProductsWithFullInformation.getAllProducts();
+        List<Product> allProductsWithFullInformation = getAllProductsWithFullInformation.getAllProducts();
         List<AllProductsWithFullInformationDTO> allProductsWithFullInformationDTOS = new ArrayList<>();
 
-        for (AllProductsWithFullInformation products : allProductsWithFullInformation) {
+        for (Product products : allProductsWithFullInformation) {
 
             AllProductsWithFullInformationDTO allProducts = new AllProductsWithFullInformationDTO(null, products.getTitle(),
                     products.getPrice(), products.getDescription(), products.getLocationImage());

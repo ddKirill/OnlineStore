@@ -1,6 +1,6 @@
 package com.ddkirill.strore.service.products;
 
-import com.ddkirill.strore.domain.AllProducts;
+import com.ddkirill.strore.domain.Product;
 import com.ddkirill.strore.entity.ProductEntity;
 import com.ddkirill.strore.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -18,19 +18,19 @@ public class GetAllProducts {
         this.productRepository = productRepository;
     }
 
-    public List<AllProducts> getAllProducts(){
+    public List<Product> getAllProducts(){
 
 
         Iterable<ProductEntity> productEntity = productRepository.findAll();
-        List<AllProducts>  allProductsList = new ArrayList<>();
+        List<Product> productList = new ArrayList<>();
 
         for (ProductEntity product : productEntity) {
-            AllProducts allProducts = new AllProducts(product.getTitle(),
-                    product.getPrice());
+            Product allProducts = new Product(product.getTitle(),
+                    product.getPrice(), product.getDescription(), product.getLocationImage());
 
-            allProductsList.add(allProducts);
+            productList.add(allProducts);
         }
-        return allProductsList;
+        return productList;
 
     }
 }

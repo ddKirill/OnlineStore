@@ -14,10 +14,6 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public ProductEntity save(ProductEntity product){
-        return productRepository.save(product);
-    }
-
     public void deleteByTitle(String title){
         productRepository.deleteByTitle(title);
     }

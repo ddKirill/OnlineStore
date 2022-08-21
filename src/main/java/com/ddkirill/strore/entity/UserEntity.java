@@ -1,72 +1,77 @@
 package com.ddkirill.strore.entity;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.UUID;
+import javax.annotation.processing.Generated;
+import java.sql.Timestamp;
 
 
 @Table (value = "users")
 public class UserEntity {
 
     @Id
-    private UUID id;
-    private String name;
-    private String lastName;
-    private String email;
-    private String password;
-    private boolean activity;
+    private Long chatId;
+    private String userName;
+    private Integer phoneNumber;
+    private Integer[] orderNumber;
+    private Timestamp registeredAt;
+    @Version
+    private Integer version;
 
-    public UserEntity(UUID id, String name, String lastName, String email, String password, String city, boolean activity) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.activity = activity;
+    public UserEntity(Long chatId, String userName, Integer phoneNumber, Integer[] orderNumber, Timestamp registeredAt) {
+        this.chatId = chatId;
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
+        this.orderNumber = orderNumber;
+        this.registeredAt = registeredAt;
     }
 
-    public UUID getId() {
-        return id;
+    public UserEntity() {
+
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Long getChatId() {
+        return chatId;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getEmail() {
-        return email;
+    public Integer getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPhoneNumber(Integer phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public String getPassword() {
-        return password;
+    public Integer[] getOrderNumber() {
+        return orderNumber;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setOrderNumber(Integer[] orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
-    public boolean isActivity() {
-        return activity;
+    public Timestamp getRegisteredAt() {
+        return registeredAt;
     }
 
-    public void setActivity(boolean activity) {
-        this.activity = activity;
+    public void setRegisteredAt(Timestamp registeredAt) {
+        this.registeredAt = registeredAt;
     }
+
+
 }

@@ -68,15 +68,14 @@ public class StoreBot {
                 if (message.isCommand()) {
 
                     if ("/start".equals(message.getText())) {
-
                         userService.addNewUser(message);
                         sendPhotoCaptionKeyboard(chat.getId().toString(), new InputFile(new File(PathEnum.START_IMAGE.getPathName()))
                                 , readTxt.readTextFile(PathEnum.START_TEXT.getPathName()), new InlineKeyboardStart().getStartKeyboard());
-
                     }
 
                     if ("/allProducts".equals(message.getText())) {
-                        sendTextMessage(chat.getId(), "All products: ");
+                        sendTextMessage(chat.getId(), "Все товары:");
+
                         List<Product> allProducts = getAllProducts.getAllProducts();
 
                         for (Product allProduct : allProducts) {
@@ -114,6 +113,11 @@ public class StoreBot {
 
                 if (callData.equals("/news")) {
                     sendTextMessageAndKeyboard(Long.valueOf(String.valueOf(chatId)), readTxt.readTextFile(PathEnum.NEWS_TEXT.getPathName()), new BuyProductButton().mainMenu());
+                }
+
+                if (callData.equals("/mainMenu")) {
+                    sendPhotoCaptionKeyboard(String.valueOf(chatId), new InputFile(new File(PathEnum.START_IMAGE.getPathName()))
+                            , readTxt.readTextFile(PathEnum.START_TEXT.getPathName()), new InlineKeyboardStart().getStartKeyboard());
                 }
 
             }

@@ -32,7 +32,7 @@ public class BuyProductButton {
     public InlineKeyboardMarkup mainMenu() {
         InlineKeyboardButton mainMenu = new InlineKeyboardButton();
         mainMenu.setText(ButtonNameEnum.MAIN_MENU.getButtonName());
-        mainMenu.setCallbackData("mainMenu");
+        mainMenu.setCallbackData("/mainMenu");
 
         List<InlineKeyboardButton> firstRow = new ArrayList<>();
         firstRow.add(mainMenu);

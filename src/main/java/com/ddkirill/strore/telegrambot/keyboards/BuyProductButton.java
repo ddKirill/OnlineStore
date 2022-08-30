@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class BuyProductButton {
 
-    public InlineKeyboardMarkup getBuyKeyboard(int productPrice) {
+    public InlineKeyboardMarkup getBuyKeyboard(int productPrice, Long productId) {
 
         InlineKeyboardButton buyButton = new InlineKeyboardButton();
         buyButton.setText("Buy - " + productPrice + "₽");

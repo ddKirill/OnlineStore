@@ -4,7 +4,7 @@ import com.ddkirill.strore.config.BotProperties;
 import com.ddkirill.strore.domain.Product;
 import com.ddkirill.strore.repository.UserRepository;
 import com.ddkirill.strore.service.ReadTxt;
-import com.ddkirill.strore.service.UserService;
+import com.ddkirill.strore.service.UserManagerService;
 import com.ddkirill.strore.service.products.GetAllProducts;
 import com.ddkirill.strore.telegrambot.enums.PathEnum;
 import com.ddkirill.strore.telegrambot.keyboards.BuyProductButton;
@@ -31,13 +31,13 @@ public class StoreBot {
     private final TelegramBotsApi botsApi;
     private final GetAllProducts getAllProducts;
     private final ReadTxt readTxt;
-    private final UserService userService;
+    private final UserManagerService userManagerService;
 
-    public StoreBot(BotProperties botProperties, GetAllProducts getAllProducts, ReadTxt readTxt, UserRepository userRepository, UserService userService) throws TelegramApiException {
+    public StoreBot(BotProperties botProperties, GetAllProducts getAllProducts, ReadTxt readTxt, UserRepository userRepository, UserManagerService userManagerService) throws TelegramApiException {
         this.botProperties = botProperties;
         this.getAllProducts = getAllProducts;
         this.readTxt = readTxt;
-        this.userService = userService;
+        this.userManagerService = userManagerService;
         this.botsApi = new TelegramBotsApi(DefaultBotSession.class);
         this.bot = new MyBot();
         this.botsApi.registerBot(bot);
@@ -68,29 +68,9 @@ public class StoreBot {
                 if (message.isCommand()) {
 
                     if ("/start".equals(message.getText())) {
-                        userService.addNewUser(message);
+                        userManagerService.addNewUser(message);
                         sendPhotoCaptionKeyboard(chat.getId().toString(), new InputFile(new File(PathEnum.START_IMAGE.getPathName()))
                                 , readTxt.readTextFile(PathEnum.START_TEXT.getPathName()), new InlineKeyboardStart().getStartKeyboard());
-                    }
-
-                    if ("/allProducts".equals(message.getText())) {
-                        sendTextMessage(chat.getId(), "Все товары:");
-
-                        List<Product> allProducts = getAllProducts.getAllProducts();
-
-                        for (Product allProduct : allProducts) {
-
-                            String title = allProduct.getTitle() + "\n";
-                            String description = allProduct.getDescription() + "\n";
-
-                            StringBuilder stringBuilder = new StringBuilder();
-                            stringBuilder.append(title);
-                            stringBuilder.append(description);
-
-                            sendPhotoCaptionKeyboard(chat.getId().toString(), new InputFile(new File(allProduct.getLocationImage()))
-                                    , stringBuilder.toString(), new BuyProductButton().getBuyKeyboard(allProduct.getPrice()));
-                        }
-                        sendTextMessageAndKeyboard(chat.getId(), "That's all products", new BuyProductButton().mainMenu());
                     }
 
                     if ("/help".equals(message.getText())) {
@@ -102,7 +82,9 @@ public class StoreBot {
                 else if (message.isUserMessage()) {
                     sendTextMessage(chat.getId(), PathEnum.NON_COMMAND_TEXT.getPathName());
                 }
-            } else if (update.hasCallbackQuery()) {
+            }
+
+            if (update.hasCallbackQuery()) {
                 String callData = update.getCallbackQuery().getData();
                 long chatId = update.getCallbackQuery().getMessage().getChatId();
                 long messageId = update.getCallbackQuery().getMessage().getMessageId();
@@ -119,6 +101,28 @@ public class StoreBot {
                     sendPhotoCaptionKeyboard(String.valueOf(chatId), new InputFile(new File(PathEnum.START_IMAGE.getPathName()))
                             , readTxt.readTextFile(PathEnum.START_TEXT.getPathName()), new InlineKeyboardStart().getStartKeyboard());
                 }
+
+                if (callData.equals("/allProducts")) {
+                    sendTextMessage(chatId, "Все товары:");
+
+                    List<Product> allProducts = getAllProducts.getAllProducts();
+
+                    for (Product allProduct : allProducts) {
+
+                        String title = allProduct.getTitle() + "\n";
+                        String description = allProduct.getDescription() + "\n";
+                        Long productId = allProduct.getId();
+
+                        StringBuilder stringBuilder = new StringBuilder();
+                        stringBuilder.append(title);
+                        stringBuilder.append(description);
+
+                        sendPhotoCaptionKeyboard(String.valueOf(chatId), new InputFile(new File(allProduct.getLocationImage()))
+                                , stringBuilder.toString(), new BuyProductButton().getBuyKeyboard(allProduct.getPrice(),allProduct.getId()));
+                    }
+                    sendTextMessageAndKeyboard(chatId, "Показаны все товары!", new BuyProductButton().mainMenu());
+                }
+
 
             }
         }

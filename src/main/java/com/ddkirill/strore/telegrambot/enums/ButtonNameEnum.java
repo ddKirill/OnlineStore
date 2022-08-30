@@ -1,14 +1,13 @@
 package com.ddkirill.strore.telegrambot.enums;
 
 public enum ButtonNameEnum {
-    INFORMATION("Information"),
-    ALL_PRODUCTS("All products"),
-    CART("Cart"),
-    ORDER_HISTORY("Order history"),
+    INFORMATION("Информация"),
+    ALL_PRODUCTS("Каталог товаров"),
+    CART("корзина"),
+    ORDER_HISTORY("История заказов"),
     HELP("Help"),
-    NEWS("News"),
-    MAIN_MENU("Main menu"),
-    BACK_BUTTON("Back");
+    NEWS("Новости"),
+    MAIN_MENU("Главное меню");
 
     private final String buttonName;
 

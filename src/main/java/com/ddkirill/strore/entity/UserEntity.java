@@ -1,12 +1,13 @@
 package com.ddkirill.strore.entity;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import javax.annotation.processing.Generated;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Table (value = "users")
@@ -14,23 +15,29 @@ public class UserEntity {
 
     @Id
     private Long chatId;
+    private Long userId;
     private String userName;
     private Integer phoneNumber;
-    private Integer[] orderNumber;
     private Timestamp registeredAt;
+    @Column(value = "chat_id")
+    private Set<OrderReferences> orderReferences = new HashSet<>();
     @Version
     private Integer version;
 
-    public UserEntity(Long chatId, String userName, Integer phoneNumber, Integer[] orderNumber, Timestamp registeredAt) {
+    public UserEntity(Long chatId, String userName, Integer phoneNumber, Timestamp registeredAt, Long userId, Set<OrderReferences> orderReferences) {
         this.chatId = chatId;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
-        this.orderNumber = orderNumber;
         this.registeredAt = registeredAt;
+        this.userId = userId;
+        this.orderReferences = orderReferences;
+    }
+
+    public void addOrderReferences(OrderEntity order) {
+        orderReferences.add(new OrderReferences(order.getOrderNumber()));
     }
 
     public UserEntity() {
-
     }
 
     public Long getChatId() {
@@ -57,14 +64,6 @@ public class UserEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    public Integer[] getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(Integer[] orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
     public Timestamp getRegisteredAt() {
         return registeredAt;
     }
@@ -73,5 +72,11 @@ public class UserEntity {
         this.registeredAt = registeredAt;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
 
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 }

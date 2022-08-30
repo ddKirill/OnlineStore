@@ -32,7 +32,7 @@ public class ProductController {
         List<ProductsDTO> productsDTOS = new ArrayList<>();
 
         for (Product allProduct : allProducts) {
-            ProductsDTO productsDTO = new ProductsDTO(allProduct.getTitle(),allProduct.getPrice(),
+            ProductsDTO productsDTO = new ProductsDTO(null, allProduct.getTitle(),allProduct.getPrice(),
                     allProduct.getDescription(), allProduct.getLocationImage());
             productsDTOS.add(productsDTO);
         }

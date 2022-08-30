@@ -25,7 +25,7 @@ public class GetAllProducts {
         List<Product> productList = new ArrayList<>();
 
         for (ProductEntity product : productEntity) {
-            Product allProducts = new Product(product.getTitle(),
+            Product allProducts = new Product(null, product.getTitle(),
                     product.getPrice(), product.getDescription(), product.getLocationImage());
 
             productList.add(allProducts);

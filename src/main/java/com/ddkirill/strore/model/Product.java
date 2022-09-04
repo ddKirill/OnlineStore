@@ -1,20 +1,13 @@
-package com.ddkirill.strore.domain;
+package com.ddkirill.strore.model;
 
 
 public class Product {
 
-    private Long id;
+    private final Long id;
     private final String title;
     private final Integer price;
     private final String description;
     private final String locationImage;
-
-    public Product(String title, Integer price, String description, String locationImage) {
-        this.title = title;
-        this.price = price;
-        this.description = description;
-        this.locationImage = locationImage;
-    }
 
     public Product(Long id, String title, Integer price, String description, String locationImage) {
         this.id = id;

@@ -26,7 +26,7 @@ CREATE TABLE users_orders
 
 CREATE TABLE product
 (
-    id SERIAL primary key,
+    product_id SERIAL primary key,
     title VARCHAR(125) not null,
     price INTEGER not null,
     description VARCHAR,
@@ -35,7 +35,7 @@ CREATE TABLE product
 
 CREATE TABLE product_in_order
 (
-    product_id INTEGER REFERENCES product (id),
+    product_id INTEGER REFERENCES product (product_id),
     order_number INTEGER REFERENCES orders (order_number),
     product_amount INTEGER,
     PRIMARY KEY (order_number, product_id)

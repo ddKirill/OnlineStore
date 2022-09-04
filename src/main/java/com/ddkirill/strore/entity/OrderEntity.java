@@ -12,9 +12,9 @@ import java.util.Set;
 public class OrderEntity {
 
     @Id
-    private final Long orderNumber;
+    private Long orderNumber;
     private String status;
-    private final Timestamp orderRegistered;
+    private Timestamp orderRegistered;
     private Integer orderPrice;
 
     @MappedCollection(idColumn = "order_number")
@@ -28,8 +28,12 @@ public class OrderEntity {
         this.productsInOrder = productsInOrder;
     }
 
+    public OrderEntity() {
+
+    }
+
     public void addProductsInOrder(ProductEntity product, int productAmount) {
-        productsInOrder.add(new ProductInOrder(product.getId(), productAmount));
+        productsInOrder.add(new ProductInOrder(product.getProductId(), productAmount));
     }
 
     public Long getOrderNumber() {

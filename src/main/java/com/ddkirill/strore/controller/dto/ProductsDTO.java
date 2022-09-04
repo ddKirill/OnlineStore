@@ -1,6 +1,6 @@
 package com.ddkirill.strore.controller.dto;
 
-import com.ddkirill.strore.domain.Product;
+import com.ddkirill.strore.model.Product;
 
 public class ProductsDTO extends Product {
 

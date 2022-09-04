@@ -1,6 +1,6 @@
 package com.ddkirill.strore.telegrambot.keyboards;
 
-import com.ddkirill.strore.telegrambot.enums.ButtonNameEnum;
+import com.ddkirill.strore.enums.ButtonNameEnum;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;

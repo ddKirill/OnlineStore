@@ -1,6 +1,6 @@
 package com.ddkirill.strore.telegrambot.keyboards;
 
-import com.ddkirill.strore.telegrambot.enums.ButtonNameEnum;
+import com.ddkirill.strore.enums.ButtonNameEnum;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -15,7 +15,7 @@ public class BuyProductButton {
 
         InlineKeyboardButton buyButton = new InlineKeyboardButton();
         buyButton.setText("Buy - " + productPrice + "₽");
-        buyButton.setCallbackData("buy");
+        buyButton.setCallbackData(productId.toString());
 
         List<InlineKeyboardButton> firstRow = new ArrayList<>();
         firstRow.add(buyButton);

@@ -1,4 +1,4 @@
-package com.ddkirill.strore.telegrambot.enums;
+package com.ddkirill.strore.enums;
 
 public enum ButtonNameEnum {
     INFORMATION("Информация"),

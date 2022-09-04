@@ -1,12 +1,13 @@
 package com.ddkirill.strore.telegrambot;
 
 import com.ddkirill.strore.config.BotProperties;
-import com.ddkirill.strore.domain.Product;
-import com.ddkirill.strore.repository.UserRepository;
+import com.ddkirill.strore.entity.OrderEntity;
+import com.ddkirill.strore.model.Product;
+import com.ddkirill.strore.enums.PathEnum;
+import com.ddkirill.strore.service.OrderManagerService;
 import com.ddkirill.strore.service.ReadTxt;
 import com.ddkirill.strore.service.UserManagerService;
-import com.ddkirill.strore.service.products.GetAllProducts;
-import com.ddkirill.strore.telegrambot.enums.PathEnum;
+import com.ddkirill.strore.service.products.ProductManageService;
 import com.ddkirill.strore.telegrambot.keyboards.BuyProductButton;
 import com.ddkirill.strore.telegrambot.keyboards.InlineKeyboardStart;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,10 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.objects.*;
+import org.telegram.telegrambots.meta.api.objects.Chat;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
@@ -29,22 +33,24 @@ public class StoreBot {
     private final BotProperties botProperties;
     private final TelegramLongPollingBot bot;
     private final TelegramBotsApi botsApi;
-    private final GetAllProducts getAllProducts;
     private final ReadTxt readTxt;
     private final UserManagerService userManagerService;
+    private final OrderManagerService orderManagerService;
+    private final ProductManageService productManageService;
 
-    public StoreBot(BotProperties botProperties, GetAllProducts getAllProducts, ReadTxt readTxt, UserRepository userRepository, UserManagerService userManagerService) throws TelegramApiException {
+    public StoreBot(BotProperties botProperties, ReadTxt readTxt,
+                    UserManagerService userManagerService, OrderManagerService orderManagerService, ProductManageService productManageService) throws TelegramApiException {
         this.botProperties = botProperties;
-        this.getAllProducts = getAllProducts;
         this.readTxt = readTxt;
         this.userManagerService = userManagerService;
+        this.orderManagerService = orderManagerService;
+        this.productManageService = productManageService;
         this.botsApi = new TelegramBotsApi(DefaultBotSession.class);
         this.bot = new MyBot();
         this.botsApi.registerBot(bot);
     }
 
     class MyBot extends TelegramLongPollingBot {
-
 
         @Override
         public String getBotUsername() {
@@ -62,20 +68,16 @@ public class StoreBot {
             if (update.hasMessage()) {
                 Message message = update.getMessage();
                 Chat chat = message.getChat();
-                User user = message.getFrom();
 
                 //CommandHandlers
                 if (message.isCommand()) {
 
                     if ("/start".equals(message.getText())) {
-                        userManagerService.addNewUser(message);
+                        userManagerService.addNewUser(message, orderManagerService.createOrder());
                         sendPhotoCaptionKeyboard(chat.getId().toString(), new InputFile(new File(PathEnum.START_IMAGE.getPathName()))
                                 , readTxt.readTextFile(PathEnum.START_TEXT.getPathName()), new InlineKeyboardStart().getStartKeyboard());
                     }
 
-                    if ("/help".equals(message.getText())) {
-                        sendTextMessage(chat.getId(), readTxt.readTextFile(PathEnum.HELP_TEXT.getPathName()));
-                    }
                 }
 
                 //NonCommandHandler
@@ -87,7 +89,8 @@ public class StoreBot {
             if (update.hasCallbackQuery()) {
                 String callData = update.getCallbackQuery().getData();
                 long chatId = update.getCallbackQuery().getMessage().getChatId();
-                long messageId = update.getCallbackQuery().getMessage().getMessageId();
+                OrderEntity currentOrder = orderManagerService.getCurrentOrder(chatId);
+
 
                 if (callData.equals("/help")) {
                     sendTextMessage(chatId, readTxt.readTextFile(PathEnum.HELP_TEXT.getPathName()));
@@ -105,7 +108,7 @@ public class StoreBot {
                 if (callData.equals("/allProducts")) {
                     sendTextMessage(chatId, "Все товары:");
 
-                    List<Product> allProducts = getAllProducts.getAllProducts();
+                    List<Product> allProducts = productManageService.getAllProducts();
 
                     for (Product allProduct : allProducts) {
 
@@ -118,11 +121,14 @@ public class StoreBot {
                         stringBuilder.append(description);
 
                         sendPhotoCaptionKeyboard(String.valueOf(chatId), new InputFile(new File(allProduct.getLocationImage()))
-                                , stringBuilder.toString(), new BuyProductButton().getBuyKeyboard(allProduct.getPrice(),allProduct.getId()));
+                                , stringBuilder.toString(), new BuyProductButton().getBuyKeyboard(allProduct.getPrice(), productId));
                     }
                     sendTextMessageAndKeyboard(chatId, "Показаны все товары!", new BuyProductButton().mainMenu());
                 }
 
+                if (callData.equals("1")){
+                    orderManagerService.addProductInOrder(currentOrder.getOrderNumber(), Long.valueOf(callData));
+                }
 
             }
         }

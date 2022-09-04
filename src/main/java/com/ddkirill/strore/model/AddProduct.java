@@ -1,4 +1,4 @@
-package com.ddkirill.strore.domain;
+package com.ddkirill.strore.model;
 
 public class AddProduct {
 

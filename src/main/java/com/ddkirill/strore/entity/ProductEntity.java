@@ -8,7 +8,7 @@ import org.springframework.data.relational.core.mapping.Table;
 public class ProductEntity {
 
     @Id
-    private Long id;
+    private Long productId;
     
     private String title;
     private Integer price;
@@ -16,16 +16,16 @@ public class ProductEntity {
     private String locationImage;
 
 
-    public ProductEntity(Long id, String title, int price, String description, String locationImage) {
-        this.id = id;
+    public ProductEntity(Long productId, String title, int price, String description, String locationImage) {
+        this.productId = productId;
         this.title = title;
         this.price = price;
         this.description = description;
         this.locationImage = locationImage;
     }
 
-    public Long getId() {
-        return id;
+    public Long getProductId() {
+        return productId;
     }
 
     public String getTitle() {

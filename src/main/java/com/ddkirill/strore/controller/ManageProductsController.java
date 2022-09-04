@@ -1,13 +1,12 @@
 package com.ddkirill.strore.controller;
 
 
-import com.ddkirill.strore.controller.dto.AllProductsWithFullInformationDTO;
-import com.ddkirill.strore.domain.AddProduct;
-import com.ddkirill.strore.domain.Product;
+import com.ddkirill.strore.controller.dto.ProductsDTO;
+import com.ddkirill.strore.model.AddProduct;
+import com.ddkirill.strore.model.Product;
 import com.ddkirill.strore.entity.ProductEntity;
 import com.ddkirill.strore.repository.ProductRepository;
-import com.ddkirill.strore.service.products.GetAllProductsWithFullInformation;
-import com.ddkirill.strore.service.products.ProductService;
+import com.ddkirill.strore.service.products.ProductManageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,31 +17,28 @@ import java.util.List;
 @Controller
 public class ManageProductsController {
 
-    private ProductRepository productRepository;
-    private GetAllProductsWithFullInformation getAllProductsWithFullInformation;
-    private ProductService productService;
+    private final ProductManageService productManageService;
+    private final ProductRepository productRepository;
 
-    public ManageProductsController(ProductRepository productRepository,
-                                    GetAllProductsWithFullInformation getAllProductsWithFullInformation, ProductService productService) {
+    public ManageProductsController(ProductManageService productManageService, ProductRepository productRepository) {
+        this.productManageService = productManageService;
         this.productRepository = productRepository;
-        this.getAllProductsWithFullInformation = getAllProductsWithFullInformation;
-        this.productService = productService;
     }
 
     @GetMapping("/allProducts/manageProducts")
     public String allProducts(Model model){
 
-        List<Product> allProductsWithFullInformation = getAllProductsWithFullInformation.getAllProducts();
-        List<AllProductsWithFullInformationDTO> allProductsWithFullInformationDTOS = new ArrayList<>();
+        List<Product> allProducts = productManageService.getAllProducts();
+        List<ProductsDTO> allProductsDTO = new ArrayList<>();
 
-        for (Product products : allProductsWithFullInformation) {
+        for (Product products : allProducts) {
 
-            AllProductsWithFullInformationDTO allProducts = new AllProductsWithFullInformationDTO(null, products.getTitle(),
+            ProductsDTO productDTO = new ProductsDTO(null, products.getTitle(),
                     products.getPrice(), products.getDescription(), products.getLocationImage());
 
-            allProductsWithFullInformationDTOS.add(allProducts);
+            allProductsDTO.add(productDTO);
         }
-        model.addAttribute("allProducts",allProductsWithFullInformationDTOS);
+        model.addAttribute("allProducts",allProductsDTO);
 
         return "manageProducts";
     }
@@ -60,7 +56,7 @@ public class ManageProductsController {
 
     @GetMapping( "/deleteProduct")
     public String deleteProduct(@RequestParam String title) {
-        productService.deleteByTitle(title);
+        productManageService.deleteByTitle(title);
         return "redirect:allProducts/manageProducts";
     }
 

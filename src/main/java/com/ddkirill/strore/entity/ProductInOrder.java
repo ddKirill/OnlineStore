@@ -5,11 +5,11 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table(value = "product_in_order")
 public class ProductInOrder {
 
-    private final Long id;
+    private final Long productId;
     private final int productAmount;
 
-    public ProductInOrder(Long id, int productAmount) {
-        this.id = id;
+    public ProductInOrder(Long productId, int productAmount) {
+        this.productId = productId;
         this.productAmount = productAmount;
     }
 
@@ -19,7 +19,7 @@ public class ProductInOrder {
     }
 
 
-    public Long getId() {
-        return id;
+    public Long getProductId() {
+        return productId;
     }
 }

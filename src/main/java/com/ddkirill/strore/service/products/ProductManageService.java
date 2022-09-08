@@ -47,4 +47,14 @@ public class ProductManageService {
         }
         return product;
     }
+
+    public List<String> getProductIdList() {
+        List<Product> allProducts = getAllProducts();
+        List<String> productIdList = new ArrayList<>();
+        for (Product allProduct : allProducts) {
+            String productIdToString = allProduct.getId().toString();
+            productIdList.add(productIdToString);
+        }
+        return productIdList;
+    }
 }

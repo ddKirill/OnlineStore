@@ -91,7 +91,7 @@ public class StoreBot {
                 String callData = update.getCallbackQuery().getData();
                 long chatId = update.getCallbackQuery().getMessage().getChatId();
                 OrderEntity currentOrder = orderManagerService.getCurrentOrder(chatId);
-
+                List<String> productIdList = productManageService.getProductIdList();
 
                 if (callData.equals("/help")) {
                     sendTextMessage(chatId, readTxt.readTextFile(PathEnum.HELP_TEXT.getPathName()));
@@ -127,7 +127,7 @@ public class StoreBot {
                     sendTextMessageAndKeyboard(chatId, "Показаны все товары!", new BuyProductButton().mainMenu());
                 }
 
-                if (callData.equals("1")){
+                if (productIdList.contains(callData)){
                     orderManagerService.addProductInOrder(currentOrder.getOrderNumber(), Long.valueOf(callData));
                 }
 

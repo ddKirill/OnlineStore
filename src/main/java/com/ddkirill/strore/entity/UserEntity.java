@@ -79,4 +79,8 @@ public class UserEntity {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    public Set<OrderReferences> getOrderReferences() {
+        return orderReferences;
+    }
 }

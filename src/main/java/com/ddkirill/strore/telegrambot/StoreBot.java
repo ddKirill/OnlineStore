@@ -2,8 +2,9 @@ package com.ddkirill.strore.telegrambot;
 
 import com.ddkirill.strore.config.BotProperties;
 import com.ddkirill.strore.entity.OrderEntity;
-import com.ddkirill.strore.model.Product;
 import com.ddkirill.strore.enums.PathEnum;
+import com.ddkirill.strore.model.Product;
+import com.ddkirill.strore.service.CartManageService;
 import com.ddkirill.strore.service.OrderManagerService;
 import com.ddkirill.strore.service.ReadTxt;
 import com.ddkirill.strore.service.UserManagerService;
@@ -37,14 +38,16 @@ public class StoreBot {
     private final UserManagerService userManagerService;
     private final OrderManagerService orderManagerService;
     private final ProductManageService productManageService;
+    private final CartManageService cartManageService;
 
     public StoreBot(BotProperties botProperties, ReadTxt readTxt,
-                    UserManagerService userManagerService, OrderManagerService orderManagerService, ProductManageService productManageService) throws TelegramApiException {
+                    UserManagerService userManagerService, OrderManagerService orderManagerService, ProductManageService productManageService, CartManageService cartManageService) throws TelegramApiException {
         this.botProperties = botProperties;
         this.readTxt = readTxt;
         this.userManagerService = userManagerService;
         this.orderManagerService = orderManagerService;
         this.productManageService = productManageService;
+        this.cartManageService = cartManageService;
         this.botsApi = new TelegramBotsApi(DefaultBotSession.class);
         this.bot = new MyBot();
         this.botsApi.registerBot(bot);
@@ -73,13 +76,11 @@ public class StoreBot {
                 if (message.isCommand()) {
 
                     if ("/start".equals(message.getText())) {
-                        userManagerService.addNewUser(message, orderManagerService.createOrder());
+                        userManagerService.addNewUser(message);
                         sendPhotoCaptionKeyboard(chat.getId().toString(), new InputFile(new File(PathEnum.START_IMAGE.getPathName()))
                                 , readTxt.readTextFile(PathEnum.START_TEXT.getPathName()), new InlineKeyboardStart().getStartKeyboard());
                     }
-
                 }
-
                 //NonCommandHandler
                 else if (message.isUserMessage()) {
                     sendTextMessage(chat.getId(), PathEnum.NON_COMMAND_TEXT.getPathName());
@@ -128,6 +129,11 @@ public class StoreBot {
 
                 if (callData.equals("1")){
                     orderManagerService.addProductInOrder(currentOrder.getOrderNumber(), Long.valueOf(callData));
+                }
+
+                if (callData.equals("/cart")) {
+                    String viewCurrentOrder = cartManageService.viewCurrentOrder(currentOrder);
+                    sendTextMessage(chatId, viewCurrentOrder);
                 }
 
             }

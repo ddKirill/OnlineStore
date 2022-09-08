@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductManageService {
@@ -34,5 +35,16 @@ public class ProductManageService {
             productList.add(allProducts);
         }
         return productList;
+    }
+
+    public ProductEntity getProductById(long productId) {
+        Optional<ProductEntity> optionalProduct = productRepository.findById(productId);
+        ProductEntity product = null;
+        if (optionalProduct.isPresent()) {
+            product = optionalProduct.get();
+        } else {
+            System.out.println("Пользователь не найден.");
+        }
+        return product;
     }
 }

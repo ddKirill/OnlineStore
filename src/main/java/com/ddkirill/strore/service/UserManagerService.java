@@ -1,6 +1,5 @@
 package com.ddkirill.strore.service;
 
-import com.ddkirill.strore.entity.OrderEntity;
 import com.ddkirill.strore.entity.UserEntity;
 import com.ddkirill.strore.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -13,12 +12,14 @@ import java.util.Optional;
 public class UserManagerService {
 
     private final UserRepository userRepository;
+    private OrderManagerService orderManagerService;
 
-    public UserManagerService(UserRepository userRepository) {
+    public UserManagerService(UserRepository userRepository, OrderManagerService orderManagerService) {
         this.userRepository = userRepository;
+        this.orderManagerService = orderManagerService;
     }
 
-    public void addNewUser(Message message, OrderEntity firstOrder) {
+    public void addNewUser(Message message) {
 
         var chatId = message.getChatId();
         var userName = message.getChat().getFirstName();
@@ -35,7 +36,7 @@ public class UserManagerService {
             newUser.setChatId(chatId);
             newUser.setRegisteredAt(timestamp);
             //Create order and add in ref table
-            newUser.addOrderReferences(firstOrder);
+            newUser.addOrderReferences(orderManagerService.createOrder());
             userRepository.save(newUser);
             System.out.println("Новый пользователь создан");
         }

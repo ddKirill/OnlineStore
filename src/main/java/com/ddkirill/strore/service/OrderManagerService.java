@@ -17,23 +17,20 @@ import java.util.Set;
 public class OrderManagerService {
 
     private final OrderRepository orderRepository;
-    private ProductRepository productRepository;
-    private UserRepository userRepository;
-    private UserManagerService userManagerService;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
 
-    public OrderManagerService(OrderRepository orderRepository, ProductRepository productRepository, UserRepository userRepository, UserManagerService userManagerService) {
+    public OrderManagerService(OrderRepository orderRepository, ProductRepository productRepository, UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
-        this.userManagerService = userManagerService;
     }
 
-    //Method for creating first order
     public OrderEntity createOrder(){
         OrderEntity firstOrder = new OrderEntity();
-        firstOrder.setStatus(OrderStatusEnum.AWAITING_PAYMENT.getStatus());
 
+        firstOrder.setStatus(OrderStatusEnum.AWAITING_PAYMENT.getStatus());
         System.out.println("Корзина создана");
         orderRepository.save(firstOrder);
         return firstOrder;
@@ -59,7 +56,14 @@ public class OrderManagerService {
     }
 
     public OrderEntity getCurrentOrder(Long chatId) {
-        UserEntity user = userManagerService.getUserById(chatId);
+        Optional<UserEntity> optionalUser = userRepository.findById(chatId);
+        UserEntity user = null;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+        } else {
+            System.out.println("Пользователь не найден или Null");
+            return null;
+        }
         Set<OrderReferences> orderReferences = user.getOrderReferences();
         OrderReferences orderReference = orderReferences.iterator().next();
         Long orderNumber = orderReference.getOrderNumber();

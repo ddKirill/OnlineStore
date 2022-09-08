@@ -3,7 +3,7 @@ package com.ddkirill.strore.enums;
 public enum ButtonNameEnum {
     INFORMATION("Информация"),
     ALL_PRODUCTS("Каталог товаров"),
-    CART("корзина"),
+    CART("Корзина"),
     ORDER_HISTORY("История заказов"),
     HELP("Help"),
     NEWS("Новости"),

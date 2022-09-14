@@ -8,6 +8,7 @@ import com.ddkirill.strore.service.CartManageService;
 import com.ddkirill.strore.service.OrderManagerService;
 import com.ddkirill.strore.service.ReadTxt;
 import com.ddkirill.strore.service.UserManagerService;
+import com.ddkirill.strore.service.products.ProductInOrderManager;
 import com.ddkirill.strore.service.products.ProductManageService;
 import com.ddkirill.strore.telegrambot.keyboards.BuyProductButton;
 import com.ddkirill.strore.telegrambot.keyboards.InlineKeyboardStart;
@@ -39,15 +40,17 @@ public class StoreBot {
     private final OrderManagerService orderManagerService;
     private final ProductManageService productManageService;
     private final CartManageService cartManageService;
+    private final ProductInOrderManager productInOrderManager;
 
     public StoreBot(BotProperties botProperties, ReadTxt readTxt,
-                    UserManagerService userManagerService, OrderManagerService orderManagerService, ProductManageService productManageService, CartManageService cartManageService) throws TelegramApiException {
+                    UserManagerService userManagerService, OrderManagerService orderManagerService, ProductManageService productManageService, CartManageService cartManageService, ProductInOrderManager productInOrderManager) throws TelegramApiException {
         this.botProperties = botProperties;
         this.readTxt = readTxt;
         this.userManagerService = userManagerService;
         this.orderManagerService = orderManagerService;
         this.productManageService = productManageService;
         this.cartManageService = cartManageService;
+        this.productInOrderManager = productInOrderManager;
         this.botsApi = new TelegramBotsApi(DefaultBotSession.class);
         this.bot = new MyBot();
         this.botsApi.registerBot(bot);
@@ -128,7 +131,7 @@ public class StoreBot {
                 }
 
                 if (productIdList.contains(callData)){
-                    orderManagerService.addProductInOrder(currentOrder.getOrderNumber(), Long.valueOf(callData));
+                    productInOrderManager.addProductInOrder(currentOrder.getOrderNumber(), Long.valueOf(callData));
                 }
 
                 if (callData.equals("/cart")) {

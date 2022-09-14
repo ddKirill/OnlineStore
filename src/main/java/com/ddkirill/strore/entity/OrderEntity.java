@@ -64,4 +64,14 @@ public class OrderEntity {
         return productsInOrder;
     }
 
+    @Override
+    public String toString() {
+        return "OrderEntity{" +
+                "orderNumber=" + orderNumber +
+                ", status='" + status + '\'' +
+                ", orderRegistered=" + orderRegistered +
+                ", orderPrice=" + orderPrice +
+                ", productsInOrder=" + productsInOrder +
+                '}';
+    }
 }

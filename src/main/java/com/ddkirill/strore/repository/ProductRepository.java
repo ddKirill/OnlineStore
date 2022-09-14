@@ -9,11 +9,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
+
 @Repository
 public interface ProductRepository extends CrudRepository<ProductEntity, Long> {
 
     @Modifying
     @Query("DELETE FROM product WHERE title=:title")
     void deleteByTitle(@Param("title") String title);
-    
 }

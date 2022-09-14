@@ -12,7 +12,7 @@ import java.util.Optional;
 public class UserManagerService {
 
     private final UserRepository userRepository;
-    private OrderManagerService orderManagerService;
+    private final OrderManagerService orderManagerService;
 
     public UserManagerService(UserRepository userRepository, OrderManagerService orderManagerService) {
         this.userRepository = userRepository;
@@ -28,7 +28,6 @@ public class UserManagerService {
         if (userRepository.existsById(chatId)) {
             System.out.println("Пользователь уже существует");
         } else {
-
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             UserEntity newUser = new UserEntity();
             newUser.setUserId(userId);

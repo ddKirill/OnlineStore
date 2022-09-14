@@ -24,11 +24,10 @@ public class ProductManageService {
     }
 
     public List<Product> getAllProducts(){
-
-        Iterable<ProductEntity> productEntity = productRepository.findAll();
+        Iterable<ProductEntity> iterableProductEntity = getIterableProductEntity();
         List<Product> productList = new ArrayList<>();
 
-        for (ProductEntity product : productEntity) {
+        for (ProductEntity product : iterableProductEntity) {
             Product allProducts = new Product(product.getProductId(), product.getTitle(),
                     product.getPrice(), product.getDescription(), product.getLocationImage());
 
@@ -49,12 +48,16 @@ public class ProductManageService {
     }
 
     public List<String> getProductIdList() {
-        List<Product> allProducts = getAllProducts();
+        Iterable<ProductEntity> iterableProductEntity = getIterableProductEntity();
         List<String> productIdList = new ArrayList<>();
-        for (Product allProduct : allProducts) {
-            String productIdToString = allProduct.getId().toString();
+        for (ProductEntity allProduct : iterableProductEntity) {
+            String productIdToString = allProduct.getProductId().toString();
             productIdList.add(productIdToString);
         }
         return productIdList;
+    }
+
+    private Iterable<ProductEntity> getIterableProductEntity(){
+        return productRepository.findAll();
     }
 }

@@ -2,11 +2,14 @@ package com.ddkirill.strore.service.products;
 
 import com.ddkirill.strore.entity.OrderEntity;
 import com.ddkirill.strore.entity.ProductEntity;
+import com.ddkirill.strore.entity.ProductInOrder;
 import com.ddkirill.strore.repository.OrderRepository;
 import com.ddkirill.strore.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ProductInOrderManager {
@@ -26,8 +29,16 @@ public class ProductInOrderManager {
 
         if (orderEntity.isPresent() && productEntity.isPresent()) {
             OrderEntity order = orderEntity.get();
-            ProductEntity product = productEntity.get();
-            order.addProductsInOrder(product, 1);
+            Set<ProductInOrder> productInOrderSet = order.getProductsInOrder();
+            Iterator<ProductInOrder> productInOrderIterator = productInOrderSet.iterator();
+            ProductInOrder productInOrder = productInOrderIterator.next();
+            if (productInOrder.getProductId().equals(productId)) {
+                int productAmount = productInOrder.getProductAmount();
+                productInOrderSet.remove(productInOrder);
+                productInOrderSet.add(new ProductInOrder(productId, productAmount + 1));
+            } else if (!productInOrderSet.contains(productInOrder)){
+                productInOrderSet.add(new ProductInOrder(productId, 1));
+            }
             orderRepository.save(order);
             System.out.println("Товар добавлен в корзину!");
             return true;

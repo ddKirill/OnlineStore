@@ -1,84 +1,77 @@
 package com.ddkirill.strore.entity;
 
-import org.glassfish.grizzly.http.util.TimeStamp;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.sql.Timestamp;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
-@Table (value = "orders")
+@Table(value = "orders")
 public class OrderEntity {
 
     @Id
-    private UUID id;
-    private int number;
-    private String buyer;
-    private String productTitle;
-    private int amount;
-    private Timestamp orderTimes;
-    private int totalCost;
+    private Long orderNumber;
+    private String status;
+    private Timestamp orderRegistered;
+    private Integer orderPrice;
 
-    public OrderEntity(UUID id, int number, String buyer, String productTitle, int amount,
-                       Timestamp timestamp, int totalCost) {
-        this.id = id;
-        this.number = number;
-        this.buyer = buyer;
-        this.productTitle = productTitle;
-        this.amount = amount;
-        this.orderTimes = timestamp;
-        this.totalCost = totalCost;
+    @MappedCollection(idColumn = "order_number")
+    private Set<ProductInOrder> productsInOrder = new HashSet<>();
+
+    public OrderEntity(Long orderNumber, String status, Timestamp orderRegistered, Integer orderPrice, Set<ProductInOrder> productsInOrder) {
+        this.orderNumber = orderNumber;
+        this.status = status;
+        this.orderRegistered = orderRegistered;
+        this.orderPrice = orderPrice;
+        this.productsInOrder = productsInOrder;
     }
 
-    public UUID getId() {
-        return id;
+    public OrderEntity() {
+
     }
 
-    public int getNumber() {
-        return number;
+    public void addProductsInOrder(ProductEntity product, int productAmount) {
+        productsInOrder.add(new ProductInOrder(product.getProductId(), productAmount));
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public Long getOrderNumber() {
+        return orderNumber;
     }
 
-    public String getBuyer() {
-        return buyer;
+    public String getStatus() {
+        return status;
     }
 
-    public void setBuyer(String buyer) {
-        this.buyer = buyer;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getProductTitle() {
-        return productTitle;
+    public Timestamp getOrderRegistered() {
+        return orderRegistered;
     }
 
-    public void setProductTitle(String productTitle) {
-        this.productTitle = productTitle;
+    public Integer getOrderPrice() {
+        return orderPrice;
     }
 
-    public int getAmount() {
-        return amount;
+    public void setOrderPrice(Integer orderPrice) {
+        this.orderPrice = orderPrice;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public Set<ProductInOrder> getProductsInOrder() {
+        return productsInOrder;
     }
 
-    public Timestamp getOrderTimes() {
-        return orderTimes;
-    }
-
-    public void setOrderTimes(Timestamp orderTimes) {
-        this.orderTimes = orderTimes;
-    }
-
-    public int getTotalCost() {
-        return totalCost;
-    }
-
-    public void setTotalCost(int totalCost) {
-        this.totalCost = totalCost;
+    @Override
+    public String toString() {
+        return "OrderEntity{" +
+                "orderNumber=" + orderNumber +
+                ", status='" + status + '\'' +
+                ", orderRegistered=" + orderRegistered +
+                ", orderPrice=" + orderPrice +
+                ", productsInOrder=" + productsInOrder +
+                '}';
     }
 }

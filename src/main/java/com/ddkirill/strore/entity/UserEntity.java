@@ -1,72 +1,86 @@
 package com.ddkirill.strore.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.UUID;
+import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Table (value = "users")
 public class UserEntity {
 
     @Id
-    private UUID id;
-    private String name;
-    private String lastName;
-    private String email;
-    private String password;
-    private boolean activity;
+    private Long chatId;
+    private Long userId;
+    private String userName;
+    private Integer phoneNumber;
+    private Timestamp registeredAt;
+    @Column(value = "chat_id")
+    private Set<OrderReferences> orderReferences = new HashSet<>();
+    @Version
+    private Integer version;
 
-    public UserEntity(UUID id, String name, String lastName, String email, String password, String city, boolean activity) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.activity = activity;
+    public UserEntity(Long chatId, String userName, Integer phoneNumber, Timestamp registeredAt, Long userId, Set<OrderReferences> orderReferences) {
+        this.chatId = chatId;
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
+        this.registeredAt = registeredAt;
+        this.userId = userId;
+        this.orderReferences = orderReferences;
     }
 
-    public UUID getId() {
-        return id;
+    public void addOrderReferences(OrderEntity order) {
+        orderReferences.add(new OrderReferences(order.getOrderNumber()));
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public UserEntity() {
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public Long getChatId() {
+        return chatId;
     }
 
-    public String getName() {
-        return name;
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getUserName() {
+        return userName;
     }
 
-    public String getEmail() {
-        return email;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public Integer getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public String getPassword() {
-        return password;
+    public void setPhoneNumber(Integer phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public Timestamp getRegisteredAt() {
+        return registeredAt;
     }
 
-    public boolean isActivity() {
-        return activity;
+    public void setRegisteredAt(Timestamp registeredAt) {
+        this.registeredAt = registeredAt;
     }
 
-    public void setActivity(boolean activity) {
-        this.activity = activity;
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Set<OrderReferences> getOrderReferences() {
+        return orderReferences;
     }
 }

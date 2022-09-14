@@ -3,29 +3,29 @@ package com.ddkirill.strore.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.UUID;
-
 
 @Table (value = "product")
 public class ProductEntity {
 
     @Id
-    private UUID id;
+    private Long productId;
+    
     private String title;
-    private int price;
+    private Integer price;
     private String description;
     private String locationImage;
 
-    public ProductEntity(UUID id, String title, int price, String description, String locationImage) {
-        this.id = id;
+
+    public ProductEntity(Long productId, String title, int price, String description, String locationImage) {
+        this.productId = productId;
         this.title = title;
         this.price = price;
         this.description = description;
         this.locationImage = locationImage;
     }
 
-    public UUID getId() {
-        return id;
+    public Long getProductId() {
+        return productId;
     }
 
     public String getTitle() {

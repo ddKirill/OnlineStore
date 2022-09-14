@@ -1,5 +1,6 @@
-package com.ddkirill.strore.telegrambot;
+package com.ddkirill.strore.telegrambot.keyboards;
 
+import com.ddkirill.strore.enums.ButtonNameEnum;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -9,7 +10,6 @@ import java.util.List;
 
 @Service
 public class InlineKeyboardStart {
-
 
     public InlineKeyboardMarkup getStartKeyboard() {
 
@@ -21,18 +21,18 @@ public class InlineKeyboardStart {
         InlineKeyboardButton helpButton = new InlineKeyboardButton();
         InlineKeyboardButton newsButton = new InlineKeyboardButton();
         //Add configurations for buttons
-        buttonInformation.setText("Information");
+        buttonInformation.setText(ButtonNameEnum.INFORMATION.getButtonName());
         buttonInformation.setUrl("https://github.com/ddKirill/OnlineStore");
-        buttonAllProducts.setText("All products");
-        buttonAllProducts.setCallbackData("bla bla bla");
-        buttonCart.setText("Cart");
-        buttonCart.setCallbackData("bla");
-        orderHistoryButton.setText("OrderHistory");
-        orderHistoryButton.setCallbackData("order History");
-        helpButton.setText("Help");
+        buttonAllProducts.setText(ButtonNameEnum.ALL_PRODUCTS.getButtonName());
+        buttonAllProducts.setCallbackData("/allProducts");
+        buttonCart.setText(ButtonNameEnum.CART.getButtonName());
+        buttonCart.setCallbackData("/cart");
+        orderHistoryButton.setText(ButtonNameEnum.ORDER_HISTORY.getButtonName());
+        orderHistoryButton.setCallbackData("/orderHistory");
+        helpButton.setText(ButtonNameEnum.HELP.getButtonName());
         helpButton.setCallbackData("/help");
-        newsButton.setText("News");
-        newsButton.setCallbackData("news");
+        newsButton.setText(ButtonNameEnum.NEWS.getButtonName());
+        newsButton.setCallbackData("/news");
 
         //Create button's row
         List<InlineKeyboardButton> firstRow = new ArrayList<>();

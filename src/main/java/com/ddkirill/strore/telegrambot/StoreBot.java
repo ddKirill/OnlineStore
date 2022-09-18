@@ -4,12 +4,11 @@ import com.ddkirill.strore.config.BotProperties;
 import com.ddkirill.strore.entity.OrderEntity;
 import com.ddkirill.strore.enums.PathEnum;
 import com.ddkirill.strore.model.Product;
-import com.ddkirill.strore.service.CartManageService;
-import com.ddkirill.strore.service.OrderManagerService;
+import com.ddkirill.strore.service.OrderHandlerService;
 import com.ddkirill.strore.service.ReadTxt;
 import com.ddkirill.strore.service.UserManagerService;
-import com.ddkirill.strore.service.products.ProductInOrderManager;
-import com.ddkirill.strore.service.products.ProductManageService;
+import com.ddkirill.strore.service.products.ProductHandlerService;
+import com.ddkirill.strore.service.products.ProductInOrderService;
 import com.ddkirill.strore.telegrambot.keyboards.BuyProductButton;
 import com.ddkirill.strore.telegrambot.keyboards.InlineKeyboardStart;
 import org.springframework.stereotype.Component;
@@ -37,20 +36,19 @@ public class StoreBot {
     private final TelegramBotsApi botsApi;
     private final ReadTxt readTxt;
     private final UserManagerService userManagerService;
-    private final OrderManagerService orderManagerService;
-    private final ProductManageService productManageService;
-    private final CartManageService cartManageService;
-    private final ProductInOrderManager productInOrderManager;
+    private final OrderHandlerService orderHandlerService;
+    private final ProductHandlerService productHandlerService;
+    private final ProductInOrderService productInOrderService;
 
-    public StoreBot(BotProperties botProperties, ReadTxt readTxt,
-                    UserManagerService userManagerService, OrderManagerService orderManagerService, ProductManageService productManageService, CartManageService cartManageService, ProductInOrderManager productInOrderManager) throws TelegramApiException {
+    public StoreBot(BotProperties botProperties, ReadTxt readTxt, UserManagerService userManagerService,
+                    OrderHandlerService orderHandlerService, ProductHandlerService productHandlerService,
+                    ProductInOrderService productInOrderService) throws TelegramApiException {
         this.botProperties = botProperties;
         this.readTxt = readTxt;
         this.userManagerService = userManagerService;
-        this.orderManagerService = orderManagerService;
-        this.productManageService = productManageService;
-        this.cartManageService = cartManageService;
-        this.productInOrderManager = productInOrderManager;
+        this.orderHandlerService = orderHandlerService;
+        this.productHandlerService = productHandlerService;
+        this.productInOrderService = productInOrderService;
         this.botsApi = new TelegramBotsApi(DefaultBotSession.class);
         this.bot = new MyBot();
         this.botsApi.registerBot(bot);
@@ -93,8 +91,8 @@ public class StoreBot {
             if (update.hasCallbackQuery()) {
                 String callData = update.getCallbackQuery().getData();
                 long chatId = update.getCallbackQuery().getMessage().getChatId();
-                OrderEntity currentOrder = orderManagerService.getCurrentOrder(chatId);
-                List<String> productIdList = productManageService.getProductIdList();
+                OrderEntity currentOrder = orderHandlerService.getCurrentOrder(chatId);
+                List<String> productIdList = productHandlerService.getAllProductIdList();
 
                 if (callData.equals("/help")) {
                     sendTextMessage(chatId, readTxt.readTextFile(PathEnum.HELP_TEXT.getPathName()));
@@ -112,7 +110,7 @@ public class StoreBot {
                 if (callData.equals("/allProducts")) {
                     sendTextMessage(chatId, "Все товары:");
 
-                    List<Product> allProducts = productManageService.getAllProducts();
+                    List<Product> allProducts = productHandlerService.getAllProducts();
 
                     for (Product allProduct : allProducts) {
 
@@ -131,11 +129,11 @@ public class StoreBot {
                 }
 
                 if (productIdList.contains(callData)){
-                    productInOrderManager.addProductInOrder(currentOrder.getOrderNumber(), Long.valueOf(callData));
+                    productInOrderService.addProductInOrder(currentOrder, Long.valueOf(callData));
                 }
 
                 if (callData.equals("/cart")) {
-                    String viewCurrentOrder = cartManageService.viewCurrentOrder(currentOrder);
+                    String viewCurrentOrder = orderHandlerService.viewCurrentOrder(currentOrder);
                     sendTextMessage(chatId, viewCurrentOrder);
                 }
 

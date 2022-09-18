@@ -61,4 +61,6 @@ public class ProductEntity {
     public void setLocationImage(String locationImage) {
         this.locationImage = locationImage;
     }
+
+
 }

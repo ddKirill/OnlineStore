@@ -12,11 +12,11 @@ import java.util.Optional;
 public class UserManagerService {
 
     private final UserRepository userRepository;
-    private final OrderManagerService orderManagerService;
+    private final OrderHandlerService orderHandlerService;
 
-    public UserManagerService(UserRepository userRepository, OrderManagerService orderManagerService) {
+    public UserManagerService(UserRepository userRepository, OrderHandlerService orderHandlerService) {
         this.userRepository = userRepository;
-        this.orderManagerService = orderManagerService;
+        this.orderHandlerService = orderHandlerService;
     }
 
     public void addNewUser(Message message) {
@@ -35,7 +35,7 @@ public class UserManagerService {
             newUser.setChatId(chatId);
             newUser.setRegisteredAt(timestamp);
             //Create order and add in ref table
-            newUser.addOrderReferences(orderManagerService.createOrder());
+            newUser.addOrderReferences(orderHandlerService.createOrder());
             userRepository.save(newUser);
             System.out.println("Новый пользователь создан");
         }

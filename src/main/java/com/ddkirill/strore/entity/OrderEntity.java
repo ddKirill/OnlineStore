@@ -15,12 +15,12 @@ public class OrderEntity {
     private Long orderNumber;
     private String status;
     private Timestamp orderRegistered;
-    private Integer orderPrice;
+    private Long orderPrice;
 
     @MappedCollection(idColumn = "order_number")
     private Set<ProductInOrder> productsInOrder = new HashSet<>();
 
-    public OrderEntity(Long orderNumber, String status, Timestamp orderRegistered, Integer orderPrice, Set<ProductInOrder> productsInOrder) {
+    public OrderEntity(Long orderNumber, String status, Timestamp orderRegistered, Long orderPrice, Set<ProductInOrder> productsInOrder) {
         this.orderNumber = orderNumber;
         this.status = status;
         this.orderRegistered = orderRegistered;
@@ -29,15 +29,14 @@ public class OrderEntity {
     }
 
     public OrderEntity() {
-
-    }
-
-    public void addProductsInOrder(ProductEntity product, int productAmount) {
-        productsInOrder.add(new ProductInOrder(product.getProductId(), productAmount));
     }
 
     public Long getOrderNumber() {
         return orderNumber;
+    }
+
+    public void setOrderNumber(Long orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
     public String getStatus() {
@@ -52,16 +51,24 @@ public class OrderEntity {
         return orderRegistered;
     }
 
-    public Integer getOrderPrice() {
+    public void setOrderRegistered(Timestamp orderRegistered) {
+        this.orderRegistered = orderRegistered;
+    }
+
+    public Long getOrderPrice() {
         return orderPrice;
     }
 
-    public void setOrderPrice(Integer orderPrice) {
+    public void setOrderPrice(Long orderPrice) {
         this.orderPrice = orderPrice;
     }
 
     public Set<ProductInOrder> getProductsInOrder() {
         return productsInOrder;
+    }
+
+    public void setProductsInOrder(Set<ProductInOrder> productsInOrder) {
+        this.productsInOrder = productsInOrder;
     }
 
     @Override

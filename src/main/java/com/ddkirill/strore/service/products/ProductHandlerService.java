@@ -3,6 +3,7 @@ package com.ddkirill.strore.service.products;
 
 import com.ddkirill.strore.entity.ProductEntity;
 import com.ddkirill.strore.model.Product;
+import com.ddkirill.strore.repository.OrderRepository;
 import com.ddkirill.strore.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductManageService {
+public class ProductHandlerService {
 
     private final ProductRepository productRepository;
+    private OrderRepository orderRepository;
 
-    public ProductManageService(ProductRepository productRepository) {
+    public ProductHandlerService(ProductRepository productRepository, OrderRepository orderRepository) {
         this.productRepository = productRepository;
+        this.orderRepository = orderRepository;
     }
 
     public void deleteByTitle(String title){
@@ -25,15 +28,15 @@ public class ProductManageService {
 
     public List<Product> getAllProducts(){
         Iterable<ProductEntity> iterableProductEntity = getIterableProductEntity();
-        List<Product> productList = new ArrayList<>();
+        List<Product> allProductsList = new ArrayList<>();
 
         for (ProductEntity product : iterableProductEntity) {
-            Product allProducts = new Product(product.getProductId(), product.getTitle(),
+            Product productIter = new Product(product.getProductId(), product.getTitle(),
                     product.getPrice(), product.getDescription(), product.getLocationImage());
 
-            productList.add(allProducts);
+            allProductsList.add(productIter);
         }
-        return productList;
+        return allProductsList;
     }
 
     public ProductEntity getProductById(long productId) {
@@ -42,12 +45,12 @@ public class ProductManageService {
         if (optionalProduct.isPresent()) {
             product = optionalProduct.get();
         } else {
-            System.out.println("Пользователь не найден.");
+            System.out.println("Продукт не найден.");
         }
         return product;
     }
 
-    public List<String> getProductIdList() {
+    public List<String> getAllProductIdList() {
         Iterable<ProductEntity> iterableProductEntity = getIterableProductEntity();
         List<String> productIdList = new ArrayList<>();
         for (ProductEntity allProduct : iterableProductEntity) {
@@ -60,4 +63,5 @@ public class ProductManageService {
     private Iterable<ProductEntity> getIterableProductEntity(){
         return productRepository.findAll();
     }
+
 }

@@ -1,26 +1,27 @@
 package com.ddkirill.strore.service;
 
-import com.ddkirill.strore.entity.OrderEntity;
-import com.ddkirill.strore.entity.OrderReferences;
-import com.ddkirill.strore.entity.UserEntity;
+import com.ddkirill.strore.entity.*;
 import com.ddkirill.strore.enums.OrderStatusEnum;
 import com.ddkirill.strore.repository.OrderRepository;
 import com.ddkirill.strore.repository.UserRepository;
+import com.ddkirill.strore.service.products.ProductHandlerService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class OrderManagerService {
+public class OrderHandlerService {
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+    private final ProductHandlerService productHandlerService;
 
 
-    public OrderManagerService(OrderRepository orderRepository, UserRepository userRepository) {
+    public OrderHandlerService(OrderRepository orderRepository, UserRepository userRepository, ProductHandlerService productHandlerService) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
+        this.productHandlerService = productHandlerService;
     }
 
     public OrderEntity createOrder(){
@@ -33,14 +34,12 @@ public class OrderManagerService {
     }
 
     public OrderEntity getOrderByOrderNumber(long orderNumber){
-        Optional<OrderEntity> optionalOrderEntity = getIterableOrderEntity(orderNumber);
-        OrderEntity orderEntity;
+        Optional<OrderEntity> optionalOrderEntity = orderRepository.findById(orderNumber);
+        OrderEntity order = new OrderEntity();
         if (optionalOrderEntity.isPresent()) {
-            orderEntity = optionalOrderEntity.get();
-            return orderEntity;
-        } else {
-            return null;
+            order = optionalOrderEntity.get();
         }
+        return order;
     }
 
     public OrderEntity getCurrentOrder(Long chatId) {
@@ -61,6 +60,25 @@ public class OrderManagerService {
             order = optionalOrder.get();
         }
         return order;
+    }
+
+    public String viewCurrentOrder(OrderEntity currentOrder) {
+        var orderNumber = currentOrder.getOrderNumber().toString();
+        //var orderPrice = currentOrder.getOrderPrice().toString();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        Set<ProductInOrder> productInOrderSet = currentOrder.getProductsInOrder();
+        for (ProductInOrder productInOrder : productInOrderSet) {
+            var productId = productInOrder.getProductId();
+            var productAmount = productInOrder.getProductAmount();
+            ProductEntity product = productHandlerService.getProductById(productId);
+            String title = product.getTitle();
+            int price = product.getPrice();
+            stringBuilder.append(title + "\n");
+            stringBuilder.append(price + "₽" + "\n");
+            stringBuilder.append("Количество продукта " + productAmount + "\n");
+        }
+        return String.join("\n", "Номер заказа " + orderNumber, stringBuilder);
     }
 
     private Optional<OrderEntity> getIterableOrderEntity(long orderNumber) {

@@ -6,7 +6,7 @@ import com.ddkirill.strore.model.AddProduct;
 import com.ddkirill.strore.model.Product;
 import com.ddkirill.strore.entity.ProductEntity;
 import com.ddkirill.strore.repository.ProductRepository;
-import com.ddkirill.strore.service.products.ProductManageService;
+import com.ddkirill.strore.service.products.ProductHandlerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +17,18 @@ import java.util.List;
 @Controller
 public class ManageProductsController {
 
-    private final ProductManageService productManageService;
+    private final ProductHandlerService productHandlerService;
     private final ProductRepository productRepository;
 
-    public ManageProductsController(ProductManageService productManageService, ProductRepository productRepository) {
-        this.productManageService = productManageService;
+    public ManageProductsController(ProductHandlerService productHandlerService, ProductRepository productRepository) {
+        this.productHandlerService = productHandlerService;
         this.productRepository = productRepository;
     }
 
     @GetMapping("/allProducts/manageProducts")
     public String allProducts(Model model){
 
-        List<Product> allProducts = productManageService.getAllProducts();
+        List<Product> allProducts = productHandlerService.getAllProducts();
         List<ProductsDTO> allProductsDTO = new ArrayList<>();
 
         for (Product products : allProducts) {
@@ -56,7 +56,7 @@ public class ManageProductsController {
 
     @GetMapping( "/deleteProduct")
     public String deleteProduct(@RequestParam String title) {
-        productManageService.deleteByTitle(title);
+        productHandlerService.deleteByTitle(title);
         return "redirect:allProducts/manageProducts";
     }
 

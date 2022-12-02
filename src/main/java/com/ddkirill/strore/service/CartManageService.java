@@ -3,7 +3,7 @@ package com.ddkirill.strore.service;
 import com.ddkirill.strore.entity.OrderEntity;
 import com.ddkirill.strore.entity.ProductEntity;
 import com.ddkirill.strore.entity.ProductInOrder;
-import com.ddkirill.strore.service.products.ProductManageService;
+import com.ddkirill.strore.service.products.ProductHandlerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +12,11 @@ import java.util.Set;
 @Service
 public class CartManageService {
 
-    private final ProductManageService productManageService;
+    private final ProductHandlerService productHandlerService;
 
     @Autowired
-    public CartManageService(ProductManageService productManageService) {
-        this.productManageService = productManageService;
+    public CartManageService(ProductHandlerService productHandlerService) {
+        this.productHandlerService = productHandlerService;
     }
 
     public String viewCurrentOrder(OrderEntity currentOrder) {
@@ -28,7 +28,7 @@ public class CartManageService {
         for (ProductInOrder productInOrder : productInOrderSet) {
             var productId = productInOrder.getProductId();
             var productAmount = productInOrder.getProductAmount();
-            ProductEntity product = productManageService.getProductById(productId);
+            ProductEntity product = productHandlerService.getProductById(productId);
             String title = product.getTitle();
             int price = product.getPrice();
             stringBuilder.append(title + "\n");

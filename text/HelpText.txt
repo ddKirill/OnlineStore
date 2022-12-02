@@ -1,0 +1,8 @@
+Если вы потерялись выбирите одну из этих команд:
+/start
+/allProducts
+/cart
+/news
+/orderHistory
+
+По всем вопросам пишите @ddKirillF

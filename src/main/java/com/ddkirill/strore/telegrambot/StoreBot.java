@@ -11,6 +11,7 @@ import com.ddkirill.strore.service.products.ProductHandlerService;
 import com.ddkirill.strore.service.products.ProductInOrderService;
 import com.ddkirill.strore.telegrambot.keyboards.BuyProductButton;
 import com.ddkirill.strore.telegrambot.keyboards.InlineKeyboardStart;
+import com.vdurmont.emoji.EmojiParser;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -77,9 +78,10 @@ public class StoreBot {
                 if (message.isCommand()) {
 
                     if ("/start".equals(message.getText())) {
+                        String emoji = EmojiParser.parseToUnicode(":department_store:");
                         userManagerService.addNewUser(message);
                         sendPhotoCaptionKeyboard(chat.getId().toString(), new InputFile(new File(PathEnum.START_IMAGE.getPathName()))
-                                , readTxt.readTextFile(PathEnum.START_TEXT.getPathName()), new InlineKeyboardStart().getStartKeyboard());
+                                ,   emoji + readTxt.readTextFile(PathEnum.START_TEXT.getPathName()), new InlineKeyboardStart().getStartKeyboard());
                     }
                 }
                 //NonCommandHandler

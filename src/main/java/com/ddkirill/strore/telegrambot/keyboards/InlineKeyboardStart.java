@@ -1,6 +1,7 @@
 package com.ddkirill.strore.telegrambot.keyboards;
 
 import com.ddkirill.strore.enums.ButtonNameEnum;
+import com.vdurmont.emoji.EmojiParser;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -21,17 +22,17 @@ public class InlineKeyboardStart {
         InlineKeyboardButton helpButton = new InlineKeyboardButton();
         InlineKeyboardButton newsButton = new InlineKeyboardButton();
         //Add configurations for buttons
-        buttonInformation.setText(ButtonNameEnum.INFORMATION.getButtonName());
+        buttonInformation.setText(textPlusEmoji(ButtonNameEnum.INFORMATION.getButtonName(), ":page_facing_up:"));
         buttonInformation.setUrl("https://github.com/ddKirill/OnlineStore");
-        buttonAllProducts.setText(ButtonNameEnum.ALL_PRODUCTS.getButtonName());
+        buttonAllProducts.setText(textPlusEmoji(ButtonNameEnum.ALL_PRODUCTS.getButtonName(), ":chart_with_upwards_trend:"));
         buttonAllProducts.setCallbackData("/allProducts");
-        buttonCart.setText(ButtonNameEnum.CART.getButtonName());
+        buttonCart.setText(textPlusEmoji(ButtonNameEnum.CART.getButtonName(), ":school_satchel:"));
         buttonCart.setCallbackData("/cart");
-        orderHistoryButton.setText(ButtonNameEnum.ORDER_HISTORY.getButtonName());
+        orderHistoryButton.setText(textPlusEmoji(ButtonNameEnum.ORDER_HISTORY.getButtonName(), ":scroll:"));
         orderHistoryButton.setCallbackData("/orderHistory");
-        helpButton.setText(ButtonNameEnum.HELP.getButtonName());
+        helpButton.setText(textPlusEmoji(ButtonNameEnum.HELP.getButtonName(), ":sos:"));
         helpButton.setCallbackData("/help");
-        newsButton.setText(ButtonNameEnum.NEWS.getButtonName());
+        newsButton.setText(textPlusEmoji(ButtonNameEnum.NEWS.getButtonName(), ":newspaper:"));
         newsButton.setCallbackData("/news");
 
         //Create button's row
@@ -56,4 +57,11 @@ public class InlineKeyboardStart {
         inlineKeyboardMarkup.setKeyboard(rowList);
         return inlineKeyboardMarkup;
     }
+
+    private String textPlusEmoji(String text, String emoji) {
+        String emojiToString = EmojiParser.parseToUnicode(emoji);
+        String textPlusEmoji = text + emojiToString;
+        return textPlusEmoji;
+    }
+
 }

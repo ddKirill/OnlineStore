@@ -6,7 +6,7 @@ public enum ButtonNameEnum {
     CART("Корзина"),
     ORDER_HISTORY("История заказов"),
     HELP("Help"),
-    NEWS("Новости"),
+    SETTINGS("Настройки"),
     MAIN_MENU("Главное меню");
 
     private final String buttonName;

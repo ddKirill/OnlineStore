@@ -32,8 +32,8 @@ public class InlineKeyboardStart {
         orderHistoryButton.setCallbackData("/orderHistory");
         helpButton.setText(textPlusEmoji(ButtonNameEnum.HELP.getButtonName(), ":sos:"));
         helpButton.setCallbackData("/help");
-        newsButton.setText(textPlusEmoji(ButtonNameEnum.NEWS.getButtonName(), ":newspaper:"));
-        newsButton.setCallbackData("/news");
+        newsButton.setText(textPlusEmoji(ButtonNameEnum.SETTINGS.getButtonName(), ":wrench:"));
+        newsButton.setCallbackData("/settings");
 
         //Create button's row
         List<InlineKeyboardButton> firstRow = new ArrayList<>();

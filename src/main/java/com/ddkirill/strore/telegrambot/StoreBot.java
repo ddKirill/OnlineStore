@@ -73,6 +73,7 @@ public class StoreBot {
             if (update.hasMessage()) {
                 Message message = update.getMessage();
                 Chat chat = message.getChat();
+                String chatId = chat.getId().toString();
 
                 //CommandHandlers
                 if (message.isCommand()) {
@@ -80,8 +81,13 @@ public class StoreBot {
                     if ("/start".equals(message.getText())) {
                         String emoji = EmojiParser.parseToUnicode(":department_store:");
                         userManagerService.addNewUser(message);
-                        sendPhotoCaptionKeyboard(chat.getId().toString(), new InputFile(new File(PathEnum.START_IMAGE.getPathName()))
-                                ,   emoji + readTxt.readTextFile(PathEnum.START_TEXT.getPathName()), new InlineKeyboardStart().getStartKeyboard());
+                        sendPhotoCaptionKeyboard(chatId, new InputFile(new File(PathEnum.START_IMAGE.getPathName()))
+                                ,   emoji + readTxt.readTextFile(PathEnum.START_TEXT.getPathName()),
+                                new InlineKeyboardStart().getStartKeyboard());
+                    }
+
+                    if ("/adminPanel".equals(message.getText())) {
+                       // sendPhotoCaptionKeyboard(chatId, );
                     }
                 }
                 //NonCommandHandler
@@ -100,8 +106,9 @@ public class StoreBot {
                     sendTextMessage(chatId, readTxt.readTextFile(PathEnum.HELP_TEXT.getPathName()));
                 }
 
-                if (callData.equals("/news")) {
-                    sendTextMessageAndKeyboard(Long.valueOf(String.valueOf(chatId)), readTxt.readTextFile(PathEnum.NEWS_TEXT.getPathName()), new BuyProductButton().mainMenu());
+                if (callData.equals("/settings")) {
+                    sendPhotoCaptionKeyboard(String.valueOf(chatId), new InputFile(new File(PathEnum.SETTINGS_IMAGE.getPathName()))
+                            , readTxt.readTextFile(PathEnum.SETTINGS_TEXT.getPathName()), new BuyProductButton().mainMenu());
                 }
 
                 if (callData.equals("/mainMenu")) {

@@ -2,10 +2,13 @@ package com.ddkirill.strore.enums;
 
 public enum PathEnum {
     HELP_TEXT("text/HelpText.txt"),
-    NEWS_TEXT("text/NewsText.txt"),
+    SETTINGS_TEXT("text/SettingsText.txt"),
     START_TEXT("text/StartText.txt"),
+    NON_COMMAND_TEXT("Message is not a command\nPlease view Help menu /help"),
     START_IMAGE("image/StartImage.jpeg"),
-    NON_COMMAND_TEXT("Message is not a command\nPlease view Help menu /help");
+
+    SETTINGS_IMAGE("image/SettingsImage.jpg");
+
 
     private final String pathName;
 

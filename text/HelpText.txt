@@ -2,7 +2,7 @@
 /start
 /allProducts
 /cart
-/news
+/settings
 /orderHistory
 
 По всем вопросам пишите @ddKirillF

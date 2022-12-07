@@ -3,12 +3,14 @@ package com.ddkirill.strore.telegrambot;
 import com.ddkirill.strore.config.BotProperties;
 import com.ddkirill.strore.entity.OrderEntity;
 import com.ddkirill.strore.enums.PathEnum;
+import com.ddkirill.strore.enums.TextEnum;
 import com.ddkirill.strore.model.Product;
 import com.ddkirill.strore.service.OrderHandlerService;
 import com.ddkirill.strore.service.ReadTxt;
 import com.ddkirill.strore.service.UserManagerService;
 import com.ddkirill.strore.service.products.ProductHandlerService;
 import com.ddkirill.strore.service.products.ProductInOrderService;
+import com.ddkirill.strore.telegrambot.keyboards.AdminButton;
 import com.ddkirill.strore.telegrambot.keyboards.BuyProductButton;
 import com.ddkirill.strore.telegrambot.keyboards.InlineKeyboardStart;
 import com.vdurmont.emoji.EmojiParser;
@@ -86,8 +88,10 @@ public class StoreBot {
                                 new InlineKeyboardStart().getStartKeyboard());
                     }
 
-                    if ("/adminPanel".equals(message.getText())) {
-                       // sendPhotoCaptionKeyboard(chatId, );
+                    //Admin panel available for only owner.
+                    if ("/adminPanel".equals(message.getText()) && botProperties.bot().botOwnerId().equals(chatId)) {
+                        sendPhotoCaptionKeyboard(chatId, new InputFile(new File("image/AdminPanelPicture.jpeg")),
+                                readTxt.readTextFile(PathEnum.ADMIN_PANEL_MAIN_MENU.getPathName()), new AdminButton().getMainMenuButton());
                     }
                 }
                 //NonCommandHandler
@@ -144,6 +148,11 @@ public class StoreBot {
                 if (callData.equals("/cart")) {
                     String viewCurrentOrder = orderHandlerService.viewCurrentOrder(currentOrder);
                     sendTextMessage(chatId, viewCurrentOrder);
+                }
+
+                if (callData.equals("/addProducts")) {
+                    sendTextMessage(chatId, TextEnum.WRITE_PRODUCT_TITLE.getTextPattern());
+
                 }
 
             }

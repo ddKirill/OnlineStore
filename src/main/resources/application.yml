@@ -12,3 +12,4 @@ telegram:
   bot:
     username: ${BOT_USERNAME}
     token: ${TOKEN}
+    bot-owner-id: ${BOT_OWNER_ID}

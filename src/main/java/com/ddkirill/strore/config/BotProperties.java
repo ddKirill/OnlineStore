@@ -7,7 +7,8 @@ public record BotProperties(boolean enable, Bot bot) {
 
     public record Bot(
             String token,
-            String username
+            String username,
+            String botOwnerId
     ) {
 
     }
